@@ -1,4 +1,45 @@
+"use client"
+
+import { useToast } from "@chakra-ui/react"
+import { useRouter } from "next/navigation"
+import { requestAccessTokenRequest } from "../../../../api/accounts"
+
 export default function SignInPage() {
+
+  const toast = useToast()
+  const router = useRouter()
+
+  async function handleSignIn(e) {
+
+    e.preventDefault()
+    
+    // Retrieve the user's entered details
+    const username = document.querySelector('input#username').value
+    const password = document.querySelector('input#password').value
+
+    // Retrieve the user's access token
+    const response = await requestAccessTokenRequest(username, password)
+
+    // Handle invalid sign in attempts
+    if (!response.ok) {
+      toast({
+        "title": "Invalid username or password.",
+        "status": "error"
+      })
+      return
+    }
+
+    // Save the token in local and session storage
+    const accessToken = response["data"]["message"]
+    sessionStorage.setItem('accessToken', accessToken)
+    localStorage.setItem('accessToken', accessToken)
+
+    // Redirect to the home page
+    router.push("/")
+
+  }
+
+
   return (
     <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -13,7 +54,7 @@ export default function SignInPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" action="#" method="POST" onSubmit={handleSignIn}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
               Username

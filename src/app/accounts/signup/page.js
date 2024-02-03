@@ -1,4 +1,58 @@
+"use client"
+
+import { useToast } from "@chakra-ui/react"
+import { useRouter } from "next/navigation"
+import { signUpRequest } from "../../../../api/accounts"
+import { requestAccessTokenRequest } from "../../../../api/accounts"
+
+
 export default function SignInPage() {
+
+  const toast = useToast()
+  const router = useRouter()
+
+  async function handleSignUp(e) {
+
+    e.preventDefault()
+
+    // Retrieve the user's entered details
+    const username = document.querySelector('input#username').value
+    const password = document.querySelector('input#password').value
+
+    // Create an account
+    let response = await signUpRequest(username, password)
+
+    // Handle failed signup attempts
+    if (!response.ok) {
+      toast({
+        "title": "Failed to create an account.",
+        "status": "error"
+      })
+      return
+    }
+
+    // Retrieve the user's access token
+    response = await requestAccessTokenRequest(username, password)
+
+    // Handle invalid sign in attempts
+    if (!response.ok) {
+      toast({
+        "title": "Failed to sign in.",
+        "status": "error"
+      })
+      return
+    }
+
+    // Save the token in local and session storage
+    const accessToken = response["data"]["message"]
+    sessionStorage.setItem('accessToken', accessToken)
+    localStorage.setItem('accessToken', accessToken)
+
+    // Redirect to the home page
+    router.push("/")    
+
+  }
+
   return (
     <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -13,7 +67,7 @@ export default function SignInPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" action="#" method="POST" onSubmit={handleSignUp}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
               Username
