@@ -30,7 +30,7 @@ export default function SignInPage() {
     }
 
     // Save the token in local and session storage
-    const accessToken = response["data"]["message"]
+    const accessToken = response["data"]["token"]
     sessionStorage.setItem('accessToken', accessToken)
     localStorage.setItem('accessToken', accessToken)
 

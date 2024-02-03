@@ -1,17 +1,21 @@
+"use client"
+
+
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { getJourneysRequest } from "../../../api/journeys"
 
 
-export default function JourneysPage() {
+export default function JourneysListPage() {
 
-  const journeys = [
-    {"id": 1, "title": "Artificial Intelligence"},
-    {"id": 2, "title": "Artificial Intelligence"},
-    {"id": 3, "title": "Artificial Intelligence"},
-    {"id": 3, "title": "Artificial Intelligence"},
-    {"id": 4, "title": "Artificial Intelligence"},
-    {"id": 5, "title": "Artificial Intelligence"},
-    {"id": 6, "title": "Artificial Intelligence"},
-  ]
+  const [journeys, setJourneys] = useState([])
+
+  // Fetch the list of journeys from the backend
+  useEffect(() => {
+    getJourneysRequest().then(response => {
+      setJourneys(response.data)
+    })
+  }, [])
 
   return (
     <main className="w-screen flex flex-col items-center justify-center">
@@ -21,7 +25,9 @@ export default function JourneysPage() {
         <CreateJourneyButton />
 
         {
-          journeys.map(journey => <JourneyLink key={journey.id} journey={journey} />)
+          journeys.map(
+            journey => <JourneyLink key={journey.id} journey={journey} />
+          )
         }
         
       </div>
@@ -33,11 +39,11 @@ export default function JourneysPage() {
 
 function JourneyLink({ journey }) {
   return (
-    <div className="w-72 h-16 max-w-full rounded-lg bg-blue-500 flex items-center justify-center">
+    <Link className="w-72 h-16 max-w-full rounded-lg bg-blue-500 flex items-center justify-center" href={`/journeys/${journey.id}`}>
       <div className="text-white text-center font-semibold text-lg">
         { journey.title }
       </div>
-    </div>
+    </Link>
   )
 }
 
