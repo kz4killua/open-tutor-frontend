@@ -1,17 +1,28 @@
-export default function JourneyViewPage() {
+"use client"
 
-  const journey = {
+import { useEffect, useState } from "react"
+import { getJourneyRequest, getJourneySectionsRequest } from "../../../../api/journeys"
 
-  }
 
-  const sections = [
-    {"id": 1},
-    {"id": 2},
-    {"id": 3},
-    {"id": 4},
-    {"id": 5},
-  ]
+export default function JourneyViewPage({ params }) {
 
+  const [journey, setJourney] = useState({})
+  const [sections, setSections] = useState([])
+
+  // Fetch the journey and its sections
+  useEffect(() => {
+    
+    getJourneyRequest(params.journey_id).then(response => {
+      setJourney(response.data)
+    })
+
+    .then(() => {
+      getJourneySectionsRequest(params.journey_id).then(response => {
+        setSections(response.data)
+      })
+    })
+    
+  }, [])
 
   return (
     <main className="w-screen h-screen flex flex-col gap-y-5 p-5">
