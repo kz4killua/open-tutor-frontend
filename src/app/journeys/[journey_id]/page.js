@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { getJourneyRequest, getJourneySectionsRequest } from "../../../../api/journeys"
+import Link from "next/link"
 
 
 export default function JourneyViewPage({ params }) {
@@ -38,10 +39,10 @@ export default function JourneyViewPage({ params }) {
 
 function JourneySectionLink({ section, i }) {
   return (
-    <div className="w-72 h-16 max-w-full rounded-lg bg-blue-500 flex items-center justify-center">
+    <Link className="w-72 h-16 max-w-full rounded-lg bg-blue-500 flex items-center justify-center" href={`/journeys/${section.journey}/${section.id}`}>
       <div className="text-white text-center font-semibold text-lg">
         Section { i + 1 }
       </div>
-    </div>
+    </Link>
   )
 }

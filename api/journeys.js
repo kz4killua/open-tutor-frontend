@@ -14,7 +14,7 @@ export async function getJourneysRequest() {
 export async function getJourneyRequest(journeyId) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/journeys/${journeyId}`, {
     headers: {
-      'Authorization': `Token ${sessionStorage.getItem('accessToken')}`
+      'Authorization': `Token ${localStorage.getItem('accessToken')}`
     }
   })
   return parseResponse(response)

@@ -1,13 +1,22 @@
+"use client"
+
 import { AiOutlineSend } from "react-icons/ai"
 import { Tooltip } from "@chakra-ui/react"
+import { useEffect, useState } from "react"
+import { getSectionRequest } from "../../../../../api/sections"
 
 
-export default function JourneySectionView() {
+export default function JourneySectionView({ params }) {
 
-  const section = {
-    "id": 1,
-    "content": "Praesent auctor ornare ultricies. Sed ultrices arcu feugiat massa semper, non sagittis ex volutpat. Aliquam rhoncus elit magna, nec rutrum justo facilisis eu. Maecenas turpis nibh, maximus sit amet porta quis, volutpat non metus. Nullam aliquet ornare neque quis porta. Proin porttitor malesuada nunc et eleifend. Nulla venenatis dolor a tellus lacinia egestas. Morbi nec est gravida, luctus augue vel, pharetra justo. Cras vel elit auctor ipsum porttitor viverra. Donec congue magna non scelerisque ultricies. Nulla id neque eu nisl scelerisque suscipit non quis magna. Vivamus vel sodales diam."
-  }
+  const [section, setSection] = useState(null)
+
+  useEffect(() => {
+
+    getSectionRequest(params.section_id).then(response => {
+      setSection(response.data)
+    })
+
+  }, [])
 
   const messages = [
     {"role": "user", "content": "Hello!"},
@@ -18,7 +27,7 @@ export default function JourneySectionView() {
     <main className="w-screen h-screen flex flex-row">
 
       <div className="w-full p-3 flex items-center justify-center">
-        { section.content }
+        { section && section.content }
       </div>
 
       <div className="w-full">
