@@ -63,7 +63,7 @@ export default function SignInPage() {
             Don't have an account?
           </span>
           <a href="/accounts/signup" className="font-semibold leading-6 text-blue-600 hover:text-blue-500">
-            Signup now
+            Sign up now
           </a>
         </p>
       </div>
