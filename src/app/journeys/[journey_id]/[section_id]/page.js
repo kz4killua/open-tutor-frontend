@@ -108,7 +108,7 @@ function SectionTextAndEvaluation({ section }) {
       </div>
 
       {
-        section.evaluation.map((question, i) => 
+        section.evaluation.evaluation.map((question, i) => 
           <MultipleChoiceQuestion key={i} question={question} />
         )
       }
