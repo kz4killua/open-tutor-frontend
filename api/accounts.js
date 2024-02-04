@@ -29,3 +29,17 @@ export async function requestAccessTokenRequest(username, password) {
   })
   return parseResponse(response)
 }
+
+
+export async function verifyAccessTokenRequest(token) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/accounts/token/verify`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: token,
+    })
+  })
+  return parseResponse(response)
+}

@@ -4,7 +4,7 @@ import { parseResponse } from "./utilities"
 export async function getJourneysRequest() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/journeys/`, {
     headers: {
-      'Authorization': `Token ${sessionStorage.getItem('accessToken')}`
+      'Authorization': `Token ${localStorage.getItem('accessToken')}`
     }
   })
   return parseResponse(response)
@@ -24,7 +24,7 @@ export async function getJourneyRequest(journeyId) {
 export async function getJourneySectionsRequest(journeyId) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/journeys/${journeyId}/sections`, {
     headers: {
-      'Authorization': `Token ${sessionStorage.getItem('accessToken')}`
+      'Authorization': `Token ${localStorage.getItem('accessToken')}`
     }
   })
   return parseResponse(response)
