@@ -83,7 +83,7 @@ function JourneyLink({ journey }) {
       
       <IoBookSharp className="fill-white" />
 
-      <div className="text-white text-center font-semibold text-lg">
+      <div className="text-white text-center font-semibold lg:text-lg">
         { journey.title }
       </div>
     </Link>
@@ -94,7 +94,7 @@ function JourneyLink({ journey }) {
 function CreateJourneyButton({ onClick }) {
   return (
     <button className="col-span-2 w-full h-16 max-w-full rounded-lg bg-blue-500 hover:bg-blue-700 flex items-center justify-center" onClick={onClick}>
-      <div className="text-white text-center font-semibold text-lg flex items-center justify-center gap-x-3">
+      <div className="text-white text-center font-semibold lg:text-lg flex items-center justify-center gap-x-3">
         <FaPlus /> Create a new learning journey.
       </div>
     </button>
