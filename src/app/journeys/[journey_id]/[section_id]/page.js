@@ -3,11 +3,12 @@
 import { AiOutlineSend } from "react-icons/ai"
 import { GrFormNextLink } from "react-icons/gr"
 
-import { Stack, Radio, RadioGroup, Tooltip } from "@chakra-ui/react"
+import { Stack, Radio, RadioGroup, Tooltip, useToast } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
-import { getSectionRequest } from "../../../../../api/sections"
+import { getSectionRequest, updateSectionRequest } from "../../../../../api/sections"
 
 import SectionHeading from "@/components/SectionHeading"
+import { useRouter } from "next/navigation"
 
 
 export default function JourneySectionView({ params }) {
@@ -24,8 +25,12 @@ export default function JourneySectionView({ params }) {
 
   return (
     <main className="w-screen h-screen flex flex-row overflow-hidden overflow-clip">
-      <SectionTextAndEvaluation section={section} />
-      <SectionChatWindow section={section} />  
+      {
+        section && <>
+          <SectionTextAndEvaluation section={section} />
+          <SectionChatWindow section={section} />  
+        </>
+      }
     </main>
   )
 }
@@ -55,6 +60,7 @@ function ChatInputField() {
 
 
 function SectionTextAndEvaluation({ section }) {
+
   return (
     <div className="w-full p-5 flex flex-col gap-y-5 overflow-y-auto">
 
@@ -72,13 +78,13 @@ function SectionTextAndEvaluation({ section }) {
         </SectionHeading>
       </div>
 
-      <MultipleChoiceQuestion />
-      <MultipleChoiceQuestion />
-      <MultipleChoiceQuestion />
-      <MultipleChoiceQuestion />
-      <MultipleChoiceQuestion />
+      {
+        section.evaluation.map((question, i) => 
+          <MultipleChoiceQuestion key={i} question={question} />
+        )
+      }
 
-      <MarkSectionAsCompleteButton />
+      <MarkSectionAsCompleteButton section={section} />
 
     </div>
   )
@@ -109,21 +115,10 @@ function SectionChatWindow({ section }) {
 }
 
 
-function MultipleChoiceQuestion() {
+function MultipleChoiceQuestion({ question }) {
 
   const [selected, setSelected] = useState(null)
 
-  const question = {
-    "question": "What is the relationship between force and mass? ",
-    "choices": [
-        {"label": "A", "text": "Force is the product of mass and acceleration."},
-        {"label": "B", "text": "Force is the sum of mass and acceleration."},
-        {"label": "C", "text": "Force is the difference between mass and acceleration."},
-        {"label": "D", "text": "There is no relationship between force and mass."}
-    ],
-    "answer": "A",
-    "explanation": "Newton's second law states that F = m * a."
-  }
 
   return (
     <div className="mb-3">
@@ -137,7 +132,7 @@ function MultipleChoiceQuestion() {
           { 
           question.choices.map(
             choice => 
-              <Radio value={ choice.label }>{ choice.text } </Radio>
+              <Radio key={choice.label} value={ choice.label }>{ choice.text } </Radio>
             ) 
           }
         </Stack>
@@ -163,10 +158,34 @@ function MultipleChoiceQuestion() {
 }
 
 
-function MarkSectionAsCompleteButton() {
+function MarkSectionAsCompleteButton({ section }) {
+
+  const toast = useToast()
+  const router = useRouter()
+
+  async function handleMarkAsComplete() {
+
+    const response = await updateSectionRequest(section.id, true)
+
+    if (response.ok) {
+        
+      // Provide a confirmation message
+      toast({
+        title: "Good job.",
+        description: "You've completed this section.",
+        status: "success"
+      })
+
+      // Return to the journey page
+      router.push(`/journeys/${section.journey}`)
+        
+      }
+
+  }
+
   return (
     <div className="px-3 mb-5">
-      <button className="w-full h-16 max-w-full rounded-lg bg-blue-500 hover:bg-blue-700 flex items-center justify-center">
+      <button className="w-full h-16 max-w-full rounded-lg bg-blue-500 hover:bg-blue-700 flex items-center justify-center" onClick={handleMarkAsComplete}>
         <div className="text-white text-center font-semibold text-lg flex items-center justify-center gap-x-3">
           <GrFormNextLink /> Mark this section as complete.
         </div>
