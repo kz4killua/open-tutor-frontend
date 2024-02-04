@@ -33,7 +33,7 @@ export default function JourneyViewPage({ params }) {
 
 
   return (
-    <main className="w-full h-full flex flex-col items-center gap-y-5 p-5 pt-10">
+    <main className="w-full h-full flex flex-col items-center gap-y-5 p-5 pt-10 overflow-y-auto">
 
       { 
         ((sections.length === 0) && !loading)

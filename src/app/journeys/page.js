@@ -44,7 +44,7 @@ export default function JourneysListPage() {
   }, [])
 
   return (
-    <main className="w-screen flex flex-col items-center justify-center">
+    <main className="w-screen flex flex-col items-center justify-center overflow-y-auto">
 
       <div className="w-full max-w-3xl px-5 py-10 grid grid-cols-2 gap-y-5 gap-x-3 justify-items-center">
 

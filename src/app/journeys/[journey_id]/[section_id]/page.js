@@ -25,7 +25,7 @@ export default function JourneySectionView({ params }) {
   }, [])
 
   return (
-    <main className="w-screen h-screen flex flex-row overflow-hidden overflow-clip">
+    <main className="grow flex flex-col md:flex-row overflow-hidden overflow-clip">
       {
         section && <>
           <SectionTextAndEvaluation section={section} />
@@ -126,9 +126,9 @@ function SectionChatWindow({ section }) {
   const [loading, setLoading] = useState(false)
 
   return (
-    <div className="w-full h-full p-5 overflow-hidden">
+    <div className="w-full h-full p-5 pt-10 overflow-hidden border-t-2 border-gray-300 lg:border-0">
 
-      <div className="mb-8 mt-6">
+      <div className="mb-8">
         <SectionHeading>
           Need help? Ask an AI.
         </SectionHeading>
