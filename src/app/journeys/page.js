@@ -13,6 +13,8 @@ import { FaSpinner } from "react-icons/fa"
 import { MdOutlineUploadFile } from "react-icons/md"
 import { RiFileUploadFill } from "react-icons/ri";
 
+import SectionHeading from "@/components/SectionHeading"
+
 import {
   Modal,
   ModalOverlay,
@@ -97,15 +99,6 @@ function CreateJourneyButton({ onClick }) {
       </div>
     </button>
     )
-}
-
-
-function SectionHeading({ children }) {
-  return (
-    <h1 className="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">
-      { children }
-    </h1>
-  )
 }
 
 
