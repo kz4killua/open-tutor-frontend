@@ -29,7 +29,7 @@ export default function JourneyViewPage({ params }) {
     <main className="w-screen h-screen flex flex-col gap-y-5 p-5">
       { 
         sections.map(
-          (section, i) => <JourneySectionLink section={section} i={i} />
+          (section, i) => <JourneySectionLink key={i} section={section} i={i} />
         ) 
       }
     </main>
