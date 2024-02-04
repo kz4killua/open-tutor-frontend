@@ -29,3 +29,22 @@ export async function getJourneySectionsRequest(journeyId) {
   })
   return parseResponse(response)
 }
+
+
+export async function createJourneyRequest(title, baseFile) {
+
+  const formData = new FormData()  
+  formData.append('title', title)
+  formData.append('base_file', baseFile)
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/journeys/`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Token ${localStorage.getItem('accessToken')}`,
+    },
+    body: formData
+  })
+
+  return parseResponse(response)
+
+}
