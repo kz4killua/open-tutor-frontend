@@ -24,3 +24,18 @@ export async function updateSectionRequest(sectionId, completed) {
   })
   return parseResponse(response)
 }
+
+
+export async function queryQuestionAnswerRequest(sectionId, question) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sections/${sectionId}/chat`, {
+    method: "POST",
+    headers: {
+      'Authorization': `Token ${localStorage.getItem('accessToken')}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      question: question,
+    })
+  })
+  return parseResponse(response)
+}

@@ -2,10 +2,11 @@
 
 import { AiOutlineSend } from "react-icons/ai"
 import { GrFormNextLink } from "react-icons/gr"
+import { FaSpinner } from "react-icons/fa"
 
 import { Stack, Radio, RadioGroup, Tooltip, useToast } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
-import { getSectionRequest, updateSectionRequest } from "../../../../../api/sections"
+import { getSectionRequest, queryQuestionAnswerRequest, updateSectionRequest } from "../../../../../api/sections"
 
 import SectionHeading from "@/components/SectionHeading"
 import { useRouter } from "next/navigation"
@@ -36,17 +37,45 @@ export default function JourneySectionView({ params }) {
 }
 
 
-function ChatInputField() {
+function ChatInputField({ section, setResponse, setLoading }) {
+
+  const toast = useToast()
+
+  async function handleSendMessage(e) {
+
+    e.preventDefault()
+
+    setLoading(true)
+
+    const question = document.querySelector('textarea#question').value
+    const response = await queryQuestionAnswerRequest(section.id, question)
+
+    if (!response.ok) {
+      toast({
+        title: "The bot didn't respond.",
+        description: "Perhaps try refreshing the page.",
+        status: "error"
+      })
+      setLoading(false)
+      return
+    }
+
+    // Update the AI response
+    setResponse(response.data.answer)
+    setLoading(false)
+
+  }
+
   return (
-    <form className="">
+    <form className="" onSubmit={handleSendMessage}>
       
       <div className="flex flex-col bg-white rounded-lg w-full h-full border-2 border-cyan-800/[.25] text-gray-500 focus-within:border-cyan-700/[.75] transition-colors duration-500">
 
-        <textarea className="resize-none p-4 rounded-lg grow text-lg outline-0" id="sandbox-input" placeholder="Ask me for help." />
+        <textarea className="resize-none p-4 rounded-lg grow text-lg outline-0" id="question" placeholder="Ask me for help." />
         
         <div className="flex justify-between p-3">
           <Tooltip hasArrow label="Send a message">
-            <button>
+            <button type="submit">
               <AiOutlineSend size={32} className="fill-cyan-700" />
             </button> 
           </Tooltip>
@@ -94,6 +123,7 @@ function SectionTextAndEvaluation({ section }) {
 function SectionChatWindow({ section }) {
 
   const [response, setResponse] = useState('')
+  const [loading, setLoading] = useState(false)
 
   return (
     <div className="w-full h-full p-5 overflow-hidden">
@@ -104,11 +134,18 @@ function SectionChatWindow({ section }) {
         </SectionHeading>
       </div>
       
-      <ChatInputField />
+      <ChatInputField section={section} setResponse={setResponse} setLoading={setLoading} />
 
       <div className="w-full mt-5 whitespace-pre-wrap">
         { response }
       </div>
+
+      {
+        loading &&
+        <div className="w-full text-center flex justify-center items-center">
+          <FaSpinner className="animate-spin" />
+        </div>
+      }
 
     </div>
   )
