@@ -195,8 +195,8 @@ function FileUploadForm({ handleFileSelect, onClose, journeys, setJourneys }) {
       </div>
 
       <div className="flex gap-3 my-5 justify-end">
-        <button className="py-2 px-3 rounded bg-blue-500 hover:bg-blue-700 text-white font-semibold flex">
-          { uploading && <Spinner /> } Create
+        <button className="py-2 px-3 rounded bg-blue-500 hover:bg-blue-700 text-white font-semibold flex items-center">
+          { uploading && <Spinner size={"sm"} className="mr-4" /> } Create
         </button>
         <button className="py-2 px-3 rounded bg-gray-500 hover:bg-gray-700 text-white font-semibold" onClick={onClose}>
           Close
