@@ -48,7 +48,7 @@ export default function JourneyViewPage({ params }) {
 
           <div className="my-2">
             <SectionHeading>
-              Continue learning "{journey.title}"
+              Continue learning &quot;{journey.title}&quot;
             </SectionHeading>
           </div>
           
