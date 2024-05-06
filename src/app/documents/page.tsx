@@ -30,11 +30,11 @@ export default function DocumentsPage() {
   ]
 
   return (
-    <div className="px-5">
+    <div>
       <Header 
         links={headerlinks} 
       />
-      <main className="p-6">
+      <main className="py-5 px-10">
         <div className="flex flex-col space-y-1.5 mt-4 mb-8">
           <h1 className="text-2xl font-semibold leading-none tracking-tight mb-1">
             Your Documents

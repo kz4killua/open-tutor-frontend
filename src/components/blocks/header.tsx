@@ -15,7 +15,7 @@ export function Header({
   links: HeaderBreadcrumbLink[] 
 }) {
   return (
-    <header className="py-5">
+    <header className="py-5 px-5">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
