@@ -3,7 +3,7 @@ import { Icon } from "@/components/blocks/icon"
 import React from "react";
 
 
-interface HeaderBreadcrumbLink {
+export interface HeaderBreadcrumbLink {
   name: string;
   href: string;
 }
