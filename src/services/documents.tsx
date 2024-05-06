@@ -17,3 +17,7 @@ export async function createDocument(name: string, file: File) {
     }
   })
 }
+
+export async function getDocumentDetail(id: number) {
+  return await instance.get(`/documents/${id}`)
+}

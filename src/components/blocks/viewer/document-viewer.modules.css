@@ -1,0 +1,36 @@
+.rendered-pdf-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.rendered-pdf-container-document {
+  width: 100%;
+  max-width: calc(100% - 2em);
+  margin: 1em 0;
+}
+
+.rendered-pdf-container-document .react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rendered-pdf-container-document .react-pdf__Page {
+  margin: 1em 0;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.rendered-pdf-container-document .react-pdf__message {
+  padding: 20px;
+  color: white;
+}
+
+.rendered-pdf-container-document .react-pdf__Page ::selection {
+  color: transparent; 
+  background: rgba(176, 216, 230, 0.5); 
+  white-space: pre; 
+  /* This helps fix the issue with base layer text. */
+}
