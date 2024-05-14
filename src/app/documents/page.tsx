@@ -18,6 +18,7 @@ import { useDocuments } from "../providers"
 import { createDocument, getDocumentsList } from "@/services/documents"
 import { formatDate } from "@/utilities/dates"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation";
 
 
 export default function DocumentsPage() {
@@ -56,6 +57,7 @@ export default function DocumentsPage() {
 function DocumentsList() {
 
   const { documents, documentsDispatch } = useDocuments()
+  const router = useRouter()
 
   return (
     <Table>
@@ -71,7 +73,11 @@ function DocumentsList() {
       <TableBody>
         {
           documents.map(document => 
-            <TableRow key={document.id} className="cursor-pointer">
+            <TableRow 
+              key={document.id} 
+              className="cursor-pointer"
+              onClick={() => router.push(`/documents/${document.id}/view`)}
+            >
               <TableCell>{document.name}</TableCell>
               <TableCell>{formatDate(document.created)}</TableCell>
             </TableRow>
