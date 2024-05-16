@@ -4,3 +4,10 @@ export interface Document {
   file: string;
   created: string;
 }
+
+
+export interface DocumentMessage {
+  id: number;
+  role: 'user' | 'assistant';
+  content: string;
+}
