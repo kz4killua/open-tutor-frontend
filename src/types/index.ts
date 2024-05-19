@@ -5,9 +5,15 @@ export interface Document {
   created: string;
 }
 
-
 export interface DocumentMessage {
   id: number;
   role: 'user' | 'assistant';
   content: string;
+  quote?: string;
+  created: string;
+}
+
+export interface DocumentSelection {
+  text: string;
+  boundingClientRect: DOMRect;
 }
