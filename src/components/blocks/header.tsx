@@ -9,13 +9,16 @@ export interface HeaderBreadcrumbLink {
 }
 
 
+export const HeaderHeight = 65
+
+
 export function Header({ 
   links 
 } : { 
   links: HeaderBreadcrumbLink[] 
 }) {
   return (
-    <header className="py-5 px-5">
+    <header className={`flex items-center py-5 px-5 h-[${HeaderHeight}px]`}>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
