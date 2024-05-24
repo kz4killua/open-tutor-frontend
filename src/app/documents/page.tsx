@@ -41,7 +41,7 @@ export default function DocumentsPage() {
             Your Documents
           </h1>
           <p className="text-sm text-muted-foreground italic">
-            "Everything around you that you call life was made up by people who were no smarter than you. "
+            &ldquo;Everything around you that you call life was made up by people who were no smarter than you. &rdquo;
           </p>
         </div>
         <div className="flex justify-end">
