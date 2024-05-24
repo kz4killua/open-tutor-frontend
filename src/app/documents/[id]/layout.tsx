@@ -34,7 +34,7 @@ export default function DocumentDetailLayout({
     .catch(message => {
       toast.error(message)
     })
-  }, [])
+  }, [documentMessagesDispatch, params.id])
   
   return (
     <React.Fragment>

@@ -50,14 +50,17 @@ export default function DocumentViewPage({
     if (document) {
       setDocument(document)
       setHeaderLinks([
-        headerLinks[0],
+        {
+          name: "Documents",
+          href: "/documents"
+        },
         {
           name: document.name,
           href: document.file
         }
       ])
     }
-  }, [documents])
+  }, [documents, params.id])
 
 
   return (

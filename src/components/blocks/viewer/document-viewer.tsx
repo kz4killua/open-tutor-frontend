@@ -55,11 +55,12 @@ export function DocumentViewer({
         })
       }
     }
-    ref.current?.addEventListener('mouseup', handleSelection);
+    const page = ref.current;
+    page?.addEventListener('mouseup', handleSelection);
     return () => {
-      ref.current?.removeEventListener('mouseup', handleSelection)
+      page?.removeEventListener('mouseup', handleSelection)
     }
-  }, [])
+  }, [setSelection])
 
   function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
     setNumPages(nextNumPages)
