@@ -3,6 +3,7 @@ export interface Document {
   name: string;
   file: string;
   created: string;
+  size: number;
 }
 
 export interface DocumentMessage {
