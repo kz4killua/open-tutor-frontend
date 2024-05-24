@@ -76,7 +76,7 @@ function DocumentsList() {
             <TableRow 
               key={document.id} 
               className="cursor-pointer"
-              onClick={() => router.push(`/documents/${document.id}/view`)}
+              onClick={() => router.push(`/documents/${document.id}`)}
             >
               <TableCell>{document.name}</TableCell>
               <TableCell>{formatDate(document.created)}</TableCell>
