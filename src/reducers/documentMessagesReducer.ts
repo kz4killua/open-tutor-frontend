@@ -5,6 +5,7 @@ export type DocumentMessagesAction =
   | { type: "ADD", documentMessage: DocumentMessage }
   | { type: "SET", documentMessages: DocumentMessage[] }
   | { type: "UPDATE", documentMessage: DocumentMessage }
+  | { type: "REMOVE", id: number }
 
 
 export default function documentMessagesReducer(documentMessages: DocumentMessage[], action: DocumentMessagesAction) {
@@ -21,6 +22,11 @@ export default function documentMessagesReducer(documentMessages: DocumentMessag
         message.id === action.documentMessage.id
         ? action.documentMessage
         : message
+      )
+
+    case "REMOVE":
+      return documentMessages.filter(message => 
+        message.id !== action.id
       )
       
     default:
