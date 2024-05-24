@@ -3,10 +3,16 @@
 import { Header } from "@/components/blocks/header";
 import { Button } from "@/components/ui/button";
 import { Download, Trash } from "lucide-react";
-import { useState } from "react";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { HeaderBreadcrumbLink } from "@/components/blocks/header";
 import { useDocuments } from "@/app/providers";
 import { formatDate } from "@/utilities/dates";
+import Link from "next/link";
+import { formatFileSize } from "@/utilities/files";
+import { type Document } from "@/types";
+import { deleteDocument } from "@/services/documents";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 export default function DocumentPage({ 
@@ -43,12 +49,16 @@ export default function DocumentPage({
             </h1>
           </div>
           <div className="flex items-center justify-center gap-x-5">
-            <Button variant={"default"} className="w-32 py-6">
-              Read
-            </Button>
-            <Button variant={"secondary"} className="w-32 py-6">
-              Evaluate
-            </Button>
+            <Link href={`/documents/${params.id}/view`}>
+              <Button variant={"default"} className="w-32 py-6">
+                Read
+              </Button>
+            </Link>
+            <Link href={`/documents/${params.id}/evaluate`}>
+              <Button variant={"secondary"} className="w-32 py-6">
+                Evaluate
+              </Button>
+            </Link>
           </div>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="grow bg-gray-100 rounded-lg p-4">
@@ -66,19 +76,18 @@ export default function DocumentPage({
                   </div>
                   <div>
                     <h3 className="text-sm text-gray-500">File Size</h3>
-                    <div>... MB</div>
+                    <div>{formatFileSize(document.size)}</div>
                   </div>
                 </div>
             </div>
             <div className="flex flex-row md:flex-col gap-3 divide-y">
-              <Button variant={"outline"} className="w-32">
-                <Download size={16} className="me-2" />
-                Download
-              </Button>
-              <Button variant={"outline"} className="w-32">
-                <Trash size={16} className="me-2" />
-                Delete
-              </Button>
+              <Link href={document.file} target="_blank">
+                <Button variant={"outline"} className="w-32">
+                  <Download size={16} className="me-2" />
+                  Download
+                </Button>
+              </Link>
+              <DocumentDeletionButtonAndDialog document={document} />
             </div>
           </div>
         </main>
@@ -87,3 +96,62 @@ export default function DocumentPage({
   )
 }
 
+
+function DocumentDeletionButtonAndDialog({
+  document
+}: {
+  document: Document
+}) {
+
+  const { documents, documentsDispatch } = useDocuments()
+  const router = useRouter()
+
+  function handleDeletion() {
+    deleteDocument(document.id)
+    .then(response => {
+      if (response.status >= 300) {
+        throw "Oops. We couldn't delete your document. Try again."
+      }
+      return response
+    })
+    .then(() => {
+      documentsDispatch({
+        type: "REMOVE", id: document.id
+      })
+      toast.success("Document deleted successfully.")
+      router.push("/documents")
+    })
+    .catch(error => toast.error(error))
+  }
+
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant={"outline"} className="w-32">
+          <Trash size={16} className="me-2" />
+          Delete
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Are you sure?</DialogTitle>
+          <DialogDescription>
+            This will delete this document, all associated messages and evaluations permanently. 
+            You cannot undo this action. 
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <Button variant={"default"} onClick={handleDeletion}>
+            Yes, I'm sure.
+          </Button>
+          <DialogClose asChild>
+            <Button variant={"outline"}>
+              Cancel
+            </Button>
+          </DialogClose>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
