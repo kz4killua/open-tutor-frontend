@@ -31,41 +31,36 @@ export default function DocumentViewPage({
 }) {
 
   const { documents, documentsDispatch } = useDocuments()
-  const [document, setDocument] = useState<Document>()
+  const document = documents.find(item => item.id.toString() === params.id)
   const [selection, setSelection] = useState<DocumentSelection | null>(null)
-  const [headerLinks, setHeaderLinks] = useState<HeaderBreadcrumbLink[]>([
-    {
-      name: "Documents",
-      href: "/documents"
-    }
-  ])
   const [userInput, setUserInput] = useState<UserInput>({ 
     query: "", quote: "" 
   })
   const [sidePanelOpen, setSidePanelOpen] = useState(false)
-
-
-  useEffect(() => {
-    const document = documents.find(item => item.id.toString() === params.id)
-    if (document) {
-      setDocument(document)
-      setHeaderLinks([
-        {
-          name: "Documents",
-          href: "/documents"
-        },
-        {
-          name: document.name,
-          href: window.location.href
-        }
-      ])
+  
+  
+  const headerlinks: HeaderBreadcrumbLink[] = [
+    {
+      name: "Documents",
+      href: "/documents"
     }
-  }, [documents, params.id])
+  ]
+
+  if (document) {
+    headerlinks.push({
+      name: document.name,
+      href: `/documents/${params.id}`
+    })
+    headerlinks.push({
+      name: "View",
+      href: window.location.href
+    })
+  }
 
 
   return (
     <div className="flex flex-col">
-      <Header links={headerLinks} />
+      <Header links={headerlinks} />
       { document &&
         <ScrollArea style={{
           height: `calc(-${HeaderHeight}px + 100vh)`
