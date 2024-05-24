@@ -56,7 +56,7 @@ export default function DocumentViewPage({
         },
         {
           name: document.name,
-          href: document.file
+          href: window.location.href
         }
       ])
     }
