@@ -21,3 +21,7 @@ export async function createDocument(name: string, file: File) {
 export async function getDocumentDetail(id: number) {
   return await instance.get(`/documents/${id}`)
 }
+
+export async function deleteDocument(id: number) {
+  return await instance.delete(`/documents/${id}`)
+}
