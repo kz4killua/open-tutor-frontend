@@ -19,3 +19,10 @@ export interface DocumentSelection {
   text: string;
   boundingClientRect: DOMRect;
 }
+
+export interface Flashcard {
+  id: number;
+  referenced_page_number: number;
+  front: string;
+  back: string;
+}
