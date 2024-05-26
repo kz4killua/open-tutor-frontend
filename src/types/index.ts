@@ -4,6 +4,7 @@ export interface Document {
   file: string;
   created: string;
   size: number;
+  page_count: number;
 }
 
 export interface DocumentMessage {
