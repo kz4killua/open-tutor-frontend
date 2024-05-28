@@ -7,10 +7,18 @@ import { getFlashcardsList } from "@/services/flashcards";
 import { type Flashcard } from "@/types"
 import { shuffleArray } from "@/utilities/arrays";
 import { Check, ChevronLeft, ChevronRight, RefreshCcw, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 import Lottie from "lottie-react";
 import seeSawAnimation from "@/lotties/see-saw.json"
+import { toast } from "sonner";
+
+
+interface UserAnswers
+{
+  correct: number[],
+  wrong: number[]
+}
 
 
 export default function DocumentEvaluationPage({ 
@@ -22,8 +30,11 @@ export default function DocumentEvaluationPage({
   const { documents, documentsDispatch } = useDocuments()
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [carouselApi, setCarouselApi] = React.useState<CarouselApi>()
-  const [activeFlashcard, setActiveFlashcard] = useState(0)
+  const [activeFlashcardIndex, setActiveFlashcardIndex] = useState(0)
   const [loading, setLoading] = useState(true)
+  const userAnswers = useRef<UserAnswers>({
+    correct: [], wrong: []
+  })
 
   const document = documents.find(item => item.id.toString() === params.id)
 
@@ -81,26 +92,45 @@ export default function DocumentEvaluationPage({
 
   useEffect(() => {
     if (carouselApi) {
-      setActiveFlashcard(carouselApi.selectedScrollSnap() + 1)
+      setActiveFlashcardIndex(carouselApi.selectedScrollSnap())
 
       carouselApi.on("select", () => {
-        setActiveFlashcard(carouselApi.selectedScrollSnap() + 1)
+        setActiveFlashcardIndex(carouselApi.selectedScrollSnap())
       })
     }
   }, [carouselApi])
 
 
   function onCorrectAnswer() {
-    carouselApi?.scrollNext()
+    userAnswers.current.correct.push(
+      flashcards[activeFlashcardIndex].id
+    )
+    scrollToNextQuestion()
   }
 
   function onWrongAnswer() {
-    carouselApi?.scrollNext()
+    userAnswers.current.wrong.push(
+      flashcards[activeFlashcardIndex].id
+    )
+    scrollToNextQuestion()
+  }
+
+  function scrollToNextQuestion() {
+    if (carouselApi?.canScrollNext()) {
+      carouselApi.scrollNext()
+    } else if (!loading) {
+      triggerEvaluationReport()
+    }
+  }
+
+  function triggerEvaluationReport() {
+    toast.success("You've reached the end of the quiz!")
   }
 
   return (
-    <main className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <Header links={headerlinks} />
+      <main>
         {
           loading 
           ?
@@ -113,7 +143,13 @@ export default function DocumentEvaluationPage({
           </div>
           :
           <div className="my-5">
-            <Carousel setApi={setCarouselApi}>
+            <Carousel 
+              setApi={setCarouselApi}
+              opts={{
+                dragFree: true,
+                watchDrag: false
+              }}
+            >
               <CarouselContent>
                 {flashcards.map(flashcard => 
                   <CarouselItem key={flashcard.id}>
@@ -130,7 +166,8 @@ export default function DocumentEvaluationPage({
             </Carousel>
           </div>
         }
-    </main>
+      </main>
+    </div>
   )
 }
 
