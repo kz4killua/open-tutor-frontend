@@ -4,14 +4,16 @@ import { useDocuments } from "@/app/providers";
 import { Header, HeaderBreadcrumbLink } from "@/components/blocks/header";
 import { Button } from "@/components/ui/button";
 import { getFlashcardsList } from "@/services/flashcards";
-import { type Flashcard } from "@/types"
-import { shuffleArray } from "@/utilities/arrays";
-import { Check, ChevronLeft, ChevronRight, RefreshCcw, X } from "lucide-react";
+import { type Document, type Flashcard } from "@/types"
+import { removeDuplicates, shuffleArray } from "@/utilities/arrays";
+import { Check, CheckIcon, RefreshCcw, TrophyIcon, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
+import { toast } from "sonner";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 import Lottie from "lottie-react";
 import seeSawAnimation from "@/lotties/see-saw.json"
-import { toast } from "sonner";
 
 
 interface UserAnswers
@@ -29,12 +31,10 @@ export default function DocumentEvaluationPage({
 
   const { documents, documentsDispatch } = useDocuments()
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
-  const [carouselApi, setCarouselApi] = React.useState<CarouselApi>()
-  const [activeFlashcardIndex, setActiveFlashcardIndex] = useState(0)
-  const [loading, setLoading] = useState(true)
   const userAnswers = useRef<UserAnswers>({
     correct: [], wrong: []
   })
+  const [quizComplete, setQuizComplete] = useState(false)
 
   const document = documents.find(item => item.id.toString() === params.id)
 
@@ -55,6 +55,124 @@ export default function DocumentEvaluationPage({
       href: window.location.href
     })
   }
+
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header links={headerlinks} />
+      {
+        quizComplete ?
+        <EvaluationReport 
+          userAnswers={userAnswers} 
+          flashcards={flashcards}
+        />
+        :
+        <EvaluationQuiz 
+          document={document}
+          userAnswers={userAnswers}
+          flashcards={flashcards}
+          setFlashcards={setFlashcards}
+          setQuizComplete={setQuizComplete}
+        />
+      }
+    </div>
+  )
+}
+
+
+function EvaluationReport({
+  userAnswers,
+  flashcards
+} : {
+  userAnswers: React.MutableRefObject<UserAnswers>,
+  flashcards: Flashcard[]
+}) {
+
+  const percentage = userAnswers.current.correct.length / (
+    userAnswers.current.correct.length + 
+    userAnswers.current.wrong.length
+  ) * 100
+
+  const failedFlashcardsReferencePages = removeDuplicates(
+    flashcards.map(f =>
+      f.referenced_page_number
+    )
+  )
+
+  return (
+    <main className="grow flex flex-col items-center justify-center gap-8">
+      <Card className="w-full max-w-md p-6">
+
+        <CardHeader className="flex flex-col items-center gap-2">
+          <TrophyIcon className="w-12 h-12 text-black" />
+          <CardTitle className="text-2xl font-bold">
+            {
+              percentage > 50 ?
+              "Great job!"
+              :
+              "You're making progress."
+            }
+          </CardTitle>
+          <CardDescription>
+            You scored {percentage}% on the quiz.
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="grid gap-4">
+          <div className="flex items-center justify-between">
+            <div className="font-medium">
+              Recommendations
+            </div>
+          </div>
+
+          <ul className="space-y-2 text-sm text-black">
+            {
+              failedFlashcardsReferencePages.length > 0 ?
+              failedFlashcardsReferencePages.map(page => 
+                <li className="flex">
+                  <CheckIcon className="w-4 h-4 mr-2 text-green-500" />
+                  Review page {page}
+                </li>
+              )
+              :
+              <li className="flex">
+                <CheckIcon className="w-4 h-4 mr-2 text-green-500" />
+                Take a break! Or keep studying. You've earned it.
+              </li>
+            }
+          </ul>
+        </CardContent>
+
+        <CardFooter className="flex justify-end">
+          <Link
+            href="/documents"
+            className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-950 disabled:pointer-events-none disabled:opacity-50"
+          >
+            Return to documents
+          </Link>
+        </CardFooter>
+
+      </Card>
+    </main>
+  )
+}
+
+
+function EvaluationQuiz({ 
+  document, userAnswers, flashcards, setFlashcards, setQuizComplete
+} : {
+  document: Document | undefined,
+  userAnswers: React.MutableRefObject<UserAnswers>,
+  flashcards: Flashcard[],
+  setFlashcards: React.Dispatch<React.SetStateAction<Flashcard[]>>,
+  setQuizComplete: React.Dispatch<React.SetStateAction<boolean>>
+}) {
+
+  const [loading, setLoading] = useState(true)
+  const [carouselApi, setCarouselApi] = React.useState<CarouselApi>()
+  const [activeFlashcardIndex, setActiveFlashcardIndex] = useState(0)
+  const { documents, documentsDispatch } = useDocuments()
+
 
   useEffect(() => {
 
@@ -125,49 +243,47 @@ export default function DocumentEvaluationPage({
 
   function triggerEvaluationReport() {
     toast.success("You've reached the end of the quiz!")
+    setQuizComplete(true)
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header links={headerlinks} />
-      <main>
-        {
-          loading 
-          ?
-          <div className="grow flex flex-col items-center justify-center">
-            <LoadingAnimation>
-              <div className="font-bold text-gray-700 text-center">
-                Loading...
-              </div>
-            </LoadingAnimation>
-          </div>
-          :
-          <div className="my-5">
-            <Carousel 
-              setApi={setCarouselApi}
-              opts={{
-                dragFree: true,
-                watchDrag: false
-              }}
-            >
-              <CarouselContent>
-                {flashcards.map(flashcard => 
-                  <CarouselItem key={flashcard.id}>
-                    <div className="w-full flex justify-center item-center">
-                      <Flashcard 
-                        flashcard={flashcard} 
-                        onCorrectAnswer={onCorrectAnswer}
-                        onWrongAnswer={onWrongAnswer}
-                      />
-                    </div>
-                  </CarouselItem>
-                )}
-              </CarouselContent>
-            </Carousel>
-          </div>
-        }
-      </main>
-    </div>
+    <main>
+      {
+        loading 
+        ?
+        <div className="grow flex flex-col items-center justify-center">
+          <LoadingAnimation>
+            <div className="font-bold text-gray-700 text-center">
+              Loading...
+            </div>
+          </LoadingAnimation>
+        </div>
+        :
+        <div className="my-5">
+          <Carousel 
+            setApi={setCarouselApi}
+            opts={{
+              dragFree: true,
+              watchDrag: false
+            }}
+          >
+            <CarouselContent>
+              {flashcards.map(flashcard => 
+                <CarouselItem key={flashcard.id}>
+                  <div className="w-full flex justify-center item-center">
+                    <Flashcard 
+                      flashcard={flashcard} 
+                      onCorrectAnswer={onCorrectAnswer}
+                      onWrongAnswer={onWrongAnswer}
+                    />
+                  </div>
+                </CarouselItem>
+              )}
+            </CarouselContent>
+          </Carousel>
+        </div>
+      }
+    </main>
   )
 }
 
