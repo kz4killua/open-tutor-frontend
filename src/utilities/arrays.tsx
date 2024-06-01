@@ -5,3 +5,10 @@ export function shuffleArray<T>(array: T[]) {
   }
   return array;
 }
+
+
+export function removeDuplicates<T>(array: T[]) {
+  return array.filter((item, position) => 
+    array.indexOf(item) == position
+  )
+}
