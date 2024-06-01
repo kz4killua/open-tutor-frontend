@@ -129,7 +129,7 @@ function EvaluationReport({
             {
               failedFlashcardsReferencePages.length > 0 ?
               failedFlashcardsReferencePages.map(page => 
-                <li className="flex">
+                <li className="flex" key={page}>
                   <CheckIcon className="w-4 h-4 mr-2 text-green-500" />
                   Review page {page}
                 </li>
@@ -137,7 +137,7 @@ function EvaluationReport({
               :
               <li className="flex">
                 <CheckIcon className="w-4 h-4 mr-2 text-green-500" />
-                Take a break! Or keep studying. You've earned it.
+                Take a break! Or keep studying. You&apos;ve earned it.
               </li>
             }
           </ul>
@@ -205,7 +205,7 @@ function EvaluationQuiz({
     }
 
     fetchFlashcards()
-  }, [documents])
+  }, [documents, document, setFlashcards])
 
 
   useEffect(() => {

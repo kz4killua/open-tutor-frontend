@@ -143,7 +143,7 @@ function DocumentDeletionButtonAndDialog({
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Button variant={"default"} onClick={handleDeletion}>
-            Yes, I'm sure.
+            Yes, I&apos;m sure.
           </Button>
           <DialogClose asChild>
             <Button variant={"outline"}>
