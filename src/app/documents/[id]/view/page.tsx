@@ -102,13 +102,13 @@ function SidePanel({
 
   return (
     <Sheet open={sidePanelOpen} onOpenChange={(value) => setSidePanelOpen(value)} modal={false}>
-      <SheetTrigger asChild>
-        <StyledTooltip text="Ask AI">
+      <StyledTooltip text="Ask AI">
+        <SheetTrigger asChild>
           <Button variant="outline" className="fixed bottom-5 right-5 z-50 rounded-full h-auto p-3 shadow-md">
             <MessageCircleQuestion />
           </Button>
-        </StyledTooltip>
-      </SheetTrigger>
+        </SheetTrigger>
+      </StyledTooltip>
       <SheetContent className="flex flex-col w-full max-w-full sm:w-[500px] sm:max-w-[500px]">
         <SheetHeader>
           <SheetTitle>Chat with an AI.</SheetTitle>
