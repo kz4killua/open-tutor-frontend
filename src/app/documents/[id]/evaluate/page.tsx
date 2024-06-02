@@ -127,7 +127,7 @@ function EvaluationReport({
 
           <ul className="space-y-2 text-sm text-black">
             {
-              failedFlashcardsReferencePages.length > 0 ?
+              percentage < 100 ?
               failedFlashcardsReferencePages.map(page => 
                 <li className="flex" key={page}>
                   <CheckIcon className="w-4 h-4 mr-2 text-green-500" />
