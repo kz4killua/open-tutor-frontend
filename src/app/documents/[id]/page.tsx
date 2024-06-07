@@ -1,10 +1,10 @@
 "use client"
 
-import { Header } from "@/components/blocks/header";
+import { Header } from "@/components/shared/header";
 import { Button } from "@/components/ui/button";
 import { Download, Trash } from "lucide-react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { HeaderBreadcrumbLink } from "@/components/blocks/header";
+import { HeaderBreadcrumbLink } from "@/components/shared/header";
 import { useDocuments } from "@/app/providers";
 import { formatDate } from "@/utilities/dates";
 import Link from "next/link";

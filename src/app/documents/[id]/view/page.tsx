@@ -2,9 +2,9 @@
 
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { type Dispatch, type SetStateAction } from "react"
-import { HeaderBreadcrumbLink, Header, HeaderHeight } from "@/components/blocks/header"
+import { HeaderBreadcrumbLink, Header, HeaderHeight } from "@/components/shared/header"
 import { type Document, type DocumentMessage, type DocumentSelection } from "@/types"
-import { DocumentViewer } from "@/components/blocks/viewer/document-viewer"
+import { DocumentViewer } from "@/components/shared/viewer/document-viewer"
 import { useDocumentMessages, useDocuments } from "@/app/providers"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -15,7 +15,7 @@ import { BookOpenText, CornerDownLeft, GraduationCap, MessageCircleQuestion, Mon
 import { createDocumentMessage } from "@/services/messages"
 import { EventSourceParserStream } from 'eventsource-parser/stream'
 import { toast } from "sonner"
-import StyledTooltip from "@/components/blocks/styled-tooltip"
+import StyledTooltip from "@/components/shared/styled-tooltip"
 
 
 interface UserInput {

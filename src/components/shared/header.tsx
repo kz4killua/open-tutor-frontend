@@ -1,5 +1,5 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
-import { Icon } from "@/components/blocks/icon"
+import { Icon } from "@/components/shared/icon"
 import React from "react";
 
 

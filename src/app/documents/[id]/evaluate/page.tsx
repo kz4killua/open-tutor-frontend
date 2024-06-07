@@ -1,7 +1,7 @@
 "use client"
 
 import { useDocuments } from "@/app/providers";
-import { Header, HeaderBreadcrumbLink } from "@/components/blocks/header";
+import { Header, HeaderBreadcrumbLink } from "@/components/shared/header";
 import { Button } from "@/components/ui/button";
 import { getFlashcardsList } from "@/services/flashcards";
 import { type Document, type Flashcard } from "@/types"
