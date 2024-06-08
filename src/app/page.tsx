@@ -33,7 +33,7 @@ function HomeHeader() {
   }, [])
 
   return (
-    <header className={`h-24 flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow-sm' : ''}`}>
+    <header className={`h-24 flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
 
       <div className="flex items-center gap-x-10">
         <Link href={""}>
@@ -42,15 +42,15 @@ function HomeHeader() {
             <span className="font-bold">Open Tutor</span>
           </div>
         </Link>
-        <nav className="grow flex justify-center gap-x-7">
+        <nav className="grow hidden sm:flex justify-center gap-x-7">
           <Link href={"/"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">Features</Link>
           <Link href={"/"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">FAQ</Link>
         </nav>
       </div>
 
-      <div className="flex gap-x-4">
-        <div className="flex gap-x-3">
-          <Button>
+      <div className="flex gap-x-1 sm:gap-x-4">
+        <div className="flex gap-x-3 items-center">
+          <Button className="hidden sm:block">
             Sign up
           </Button>
           <Button variant={"secondary"}>
@@ -59,12 +59,7 @@ function HomeHeader() {
         </div>
         <div className="border-l ml-2" />
         <div>
-          <Button variant={"ghost"} className="px-2 text-slate-400 hover:text-slate-500">
-            <svg viewBox="0 0 16 16" className="w-5 h-5" fill="currentColor" aria-hidden="true">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-            </svg>
-          </Button>
-          <Button variant={"ghost"} className="px-2 text-slate-400 hover:text-slate-500">
+          <Button variant={"ghost"} className="px-1 sm:px-2 text-slate-400 hover:text-slate-500">
             <Moon className="w-5 h-5" />
           </Button>
         </div>
