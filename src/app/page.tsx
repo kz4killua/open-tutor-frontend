@@ -2,16 +2,23 @@
 
 import { Icon } from "@/components/shared/icon";
 import { Button } from "@/components/ui/button";
-import { Github, Moon } from "lucide-react";
+import { Github, Moon, Rocket } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 
 export default function Home() {
   return (
     <div>
       <HomeHeader />
-      <Hero />
+      <main className="mb-20">
+        <Hero />
+        {/* <Features /> */}
+        <FrequentlyAskedQuestions />
+      </main>
+      <Footer />
     </div>
   );
 }
@@ -33,7 +40,7 @@ function HomeHeader() {
   }, [])
 
   return (
-    <header className={`h-24 flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
+    <header className={`h-24 z-50 bg-white flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
 
       <div className="flex items-center gap-x-10">
         <Link href={""}>
@@ -72,8 +79,99 @@ function HomeHeader() {
 
 function Hero() {
   return (
-    <div className="h-screen">
+    <section className="grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 px-10">
 
-    </div>
+      <div className="flex flex-col items-center justify-center text-center space-y-6 py-6 md:py-12 lg:py-32">
+        <h1 className="text-3xl md:text-5xl md:leading-tight font-bold">
+          <span>Everything you need to </span>
+          <span className=" relative whitespace-nowrap">
+            <span className="absolute bg-primary opacity-80 -left-2 -top-1 -bottom-1 -right-2 md:-left-3 md:-top-0 md:-bottom-0 md:-right-3 -rotate-1"></span>
+            <span className="relative text-white">study with AI</span>
+          </span>
+        </h1>
+        <p className="mt-5 leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+          More than just a chatbot, take advantage of diverse study tools to learn, grow, and excel. 
+        </p>
+        <div className="flex gap-x-3 items-center justify-center">
+          <Button className="px-12 h-12">
+            <Rocket className="w-5 h-5 mr-2" />
+            Get started
+          </Button>
+          <Button className="px-12 h-12" variant={"secondary"}>
+            <svg viewBox="0 0 16 16" className="w-5 h-5 mr-2" fill="currentColor" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+            </svg>
+            View Github
+          </Button>
+        </div>
+      </div>
+
+      <div className="relative">
+        <Image 
+          src={"/hero-image.svg"} 
+          alt="Studying with AI"
+          className="px-10"
+          fill
+        />
+      </div>
+
+    </section>
+  )
+}
+
+
+function Features() {
+
+}
+
+
+function FrequentlyAskedQuestions() {
+  return (
+    <section className="flex flex-col items-center justify-center">
+      <h2 className="font-bold text-3xl md:text-5xl text-center mb-6">Got questions?</h2>
+      <h2 className="text-muted-foreground text-lg md:text-xl text-center mb-6">We've got answers.</h2>
+      <Accordion type="single" collapsible className="w-full max-w-3xl">
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Do I need to be a student to use Open Tutor?</AccordionTrigger>
+          <AccordionContent>
+            Nope. Anyone can use Open Tutor. All you need to do is be willing to learn. 
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>How much does it cost to sign up?</AccordionTrigger>
+          <AccordionContent>
+            Open Tutor is free! 
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-3">
+          <AccordionTrigger>Is Open Tutor suitable for all subjects?</AccordionTrigger>
+          <AccordionContent>
+            Yes, Open Tutor supports a wide range of subjects including math, science, literature, history, and more. Our AI is designed to adapt to different types of content and learning styles.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-4">
+          <AccordionTrigger>I'm a developer. Can I contribute?</AccordionTrigger>
+          <AccordionContent>
+            Yes please! We are currently open-source and accepting contributions. Please check out our Github.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </section>
+  )
+}
+
+
+function FinalCTA() {
+
+}
+
+
+function Footer() {
+  return (
+    <footer className="flex items-center gap-x-1 px-6 pt-5 pb-10">
+      <Icon width={25} height={25} /> 
+      Built by <Link href={"/"} className="font-medium underline underline-offset-4">Ifeanyi.</Link>
+      The source code is available on <Link href={"/"} className="font-medium underline underline-offset-4">Github.</Link>
+    </footer>
   )
 }
