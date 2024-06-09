@@ -15,7 +15,7 @@ export default function Home() {
       <HomeHeader />
       <main className="mb-20">
         <Hero />
-        {/* <Features /> */}
+        <Features />
         <FrequentlyAskedQuestions />
       </main>
       <Footer />
@@ -50,8 +50,8 @@ function HomeHeader() {
           </div>
         </Link>
         <nav className="grow hidden sm:flex justify-center gap-x-7">
-          <Link href={"/"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">Features</Link>
-          <Link href={"/"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">FAQ</Link>
+          <Link href={"/#features"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">Features</Link>
+          <Link href={"/#faq"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">FAQ</Link>
         </nav>
       </div>
 
@@ -121,15 +121,116 @@ function Hero() {
 
 
 function Features() {
+  return (
+    <section id="features" className="flex flex-col items-center justify-center max-w-5xl mx-auto mb-20">
+      <SectionHeading>Features</SectionHeading>
+      <SectionSubHeading>(Includes screenshots from the actual app!)</SectionSubHeading>
+      <div className="flex flex-col gap-6 mt-5 w-full">
+        <FeatureItem 
+          imageSrc="/features-chat.png"
+          imageAlt="chat window"
+        >
+          <FeatureItemHeading>
+            Smart Tutor
+          </FeatureItemHeading>
+          <FeatureItemSubHeading>
+            AI-driven chatbot that provides real-time answers and explanations.
+          </FeatureItemSubHeading>
+        </FeatureItem>
+        <FeatureItem 
+          imageSrc="/features-context.png"
+          imageAlt="contextual queries"
+        >
+          <FeatureItemHeading>
+            Contextual Help
+          </FeatureItemHeading>
+          <FeatureItemSubHeading>
+            Offers suggestions and hints based on the current topic and user&apos;s progress.
+          </FeatureItemSubHeading>
+        </FeatureItem>
+        <FeatureItem 
+          imageSrc="/features-flashcard.png"
+          imageAlt="dynamic flashcards"
+        >
+          <FeatureItemHeading>
+            Dynamic flashcards
+          </FeatureItemHeading>
+          <FeatureItemSubHeading>
+            Intelligent flashcards that adjust content based on user performance.
+          </FeatureItemSubHeading>
+        </FeatureItem>
+        <FeatureItem 
+          imageSrc="/features-evaluation.png"
+          imageAlt="tailor-made progress reports"
+        >
+          <FeatureItemHeading>
+            Progress Reports
+          </FeatureItemHeading>
+          <FeatureItemSubHeading>
+            Detailed analytics on study habits, progress, and areas for improvement. 
+          </FeatureItemSubHeading>
+        </FeatureItem>
+      </div>
+    </section>
+  )
+}
 
+
+function FeatureItem({ 
+  imageSrc, imageAlt, children
+} : {
+  imageSrc: string, imageAlt: string, children: React.ReactNode
+}) {
+  return (
+    <div className="group w-full grid sm:grid-cols-2 gap-4 justify-center px-10">
+      <div className="relative min-h-64 sm:group-even:order-last">
+        <Image 
+          src={imageSrc}
+          width={400}
+          height={400}
+          alt={imageAlt}
+          className="rounded-lg border shadow mx-auto"
+        />
+      </div>
+      <div className="p-12 flex flex-col justify-center gap-3">
+        { children }
+      </div>
+    </div>
+  )
+}
+
+
+function FeatureItemHeading({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <h3 className="text-lg font-bold">
+      { children }
+    </h3>
+  )
+}
+
+
+function FeatureItemSubHeading({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <p className="text-muted-foreground">
+      { children }
+    </p>
+  )
 }
 
 
 function FrequentlyAskedQuestions() {
   return (
-    <section className="flex flex-col items-center justify-center">
-      <h2 className="font-bold text-3xl md:text-5xl text-center mb-6">Got questions?</h2>
-      <h2 className="text-muted-foreground text-lg md:text-xl text-center mb-6">We've got answers.</h2>
+    <section id="faq" className="flex flex-col items-center justify-center">
+      <SectionHeading>Got questions?</SectionHeading>
+      <SectionSubHeading>We've got answers.</SectionSubHeading>
       <Accordion type="single" collapsible className="w-full max-w-3xl">
         <AccordionItem value="item-1">
           <AccordionTrigger>Do I need to be a student to use Open Tutor?</AccordionTrigger>
@@ -162,7 +263,33 @@ function FrequentlyAskedQuestions() {
 
 
 function FinalCTA() {
+  
+}
 
+
+function SectionHeading({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <h2 className="font-bold text-3xl md:text-5xl text-center mb-6">
+      { children }
+    </h2>
+  )
+}
+
+
+function SectionSubHeading({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <h2 className="text-muted-foreground text-lg md:text-xl text-center mb-6">
+      { children }
+    </h2>
+  )
 }
 
 
