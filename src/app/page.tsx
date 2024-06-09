@@ -17,6 +17,7 @@ export default function Home() {
         <Hero />
         <Features />
         <FrequentlyAskedQuestions />
+        <FinalCTA />
       </main>
       <Footer />
     </div>
@@ -79,7 +80,7 @@ function HomeHeader() {
 
 function Hero() {
   return (
-    <section className="grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 px-10">
+    <section className="grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 px-10 mb-10">
 
       <div className="flex flex-col items-center justify-center text-center space-y-6 py-6 md:py-12 lg:py-32">
         <h1 className="text-3xl md:text-5xl md:leading-tight font-bold">
@@ -122,7 +123,7 @@ function Hero() {
 
 function Features() {
   return (
-    <section id="features" className="flex flex-col items-center justify-center max-w-5xl mx-auto mb-20">
+    <section id="features" className="flex flex-col items-center justify-center max-w-5xl mx-auto my-20">
       <SectionHeading>Features</SectionHeading>
       <SectionSubHeading>(Includes screenshots from the actual app!)</SectionSubHeading>
       <div className="flex flex-col gap-6 mt-5 w-full">
@@ -228,7 +229,7 @@ function FeatureItemSubHeading({
 
 function FrequentlyAskedQuestions() {
   return (
-    <section id="faq" className="flex flex-col items-center justify-center">
+    <section id="faq" className="flex flex-col items-center justify-center my-20">
       <SectionHeading>Got questions?</SectionHeading>
       <SectionSubHeading>We've got answers.</SectionSubHeading>
       <Accordion type="single" collapsible className="w-full max-w-3xl">
@@ -263,7 +264,22 @@ function FrequentlyAskedQuestions() {
 
 
 function FinalCTA() {
-  
+  return (
+    <section className="mt-20 mb-10 mx-auto max-w-2xl">
+      <SectionHeading>
+        Ready to try it out?
+      </SectionHeading>
+      <SectionSubHeading>
+        Sign up today and experience the power of our platform. Let&apos;s build something great together.
+      </SectionSubHeading>
+      <div className="text-center">
+        <Button className="px-12 h-12">
+          <Rocket className="w-5 h-5 mr-2" />
+          Get started
+        </Button>
+      </div>
+    </section>
+  )
 }
 
 
