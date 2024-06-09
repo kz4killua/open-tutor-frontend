@@ -62,9 +62,7 @@ export default function DocumentViewPage({
     <div className="flex flex-col">
       <Header links={headerlinks} />
       { document &&
-        <ScrollArea style={{
-          height: `calc(-${HeaderHeight}px + 100vh)`
-        }}>
+        <div>
           <main>
             <ActionsMenu 
               selection={selection}  
@@ -83,7 +81,7 @@ export default function DocumentViewPage({
               setUserInput={setUserInput} 
             />
           </main>
-        </ScrollArea>
+        </div>
       }
     </div>
   )
