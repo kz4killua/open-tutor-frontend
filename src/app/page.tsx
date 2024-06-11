@@ -44,7 +44,7 @@ function HomeHeader() {
     <header className={`h-24 z-50 bg-white flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
 
       <div className="flex items-center gap-x-10">
-        <Link href={""}>
+        <Link href={"/"}>
           <div className="flex gap-x-1 items-center">
             <Icon width={30} height={30} />
             <span className="font-bold">Open Tutor</span>
@@ -58,12 +58,16 @@ function HomeHeader() {
 
       <div className="flex gap-x-1 sm:gap-x-4">
         <div className="flex gap-x-3 items-center">
-          <Button className="hidden sm:block">
-            Sign up
-          </Button>
-          <Button variant={"secondary"}>
-            Sign in
-          </Button>
+          <Link href={"/accounts/signup"}>
+            <Button className="hidden sm:block">
+              Sign up
+            </Button>
+          </Link>
+          <Link href={"/accounts/signin"}>
+            <Button variant={"secondary"}>
+              Sign in
+            </Button>
+          </Link>
         </div>
         <div className="border-l ml-2" />
         <div>
