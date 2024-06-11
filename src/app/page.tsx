@@ -2,18 +2,24 @@
 
 import { Icon } from "@/components/shared/icon";
 import { Button } from "@/components/ui/button";
-import { Github, Moon, Rocket } from "lucide-react";
+import { Github, Moon, Rocket, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 
 export default function Home() {
+
+  const [darkMode, setDarkMode] = useState(false)
+
   return (
-    <div>
-      <HomeHeader />
-      <main className="mb-20">
+    <div className={`${darkMode ? "dark" : ""} transition-colors duration-700`}>
+      <HomeHeader 
+        darkMode={darkMode} 
+        setDarkMode={setDarkMode} 
+      />
+      <main className="pb-20 dark:bg-secondary">
         <Hero />
         <Features />
         <FrequentlyAskedQuestions />
@@ -25,7 +31,12 @@ export default function Home() {
 }
 
 
-function HomeHeader() {
+function HomeHeader({
+  darkMode, setDarkMode
+} : {
+  darkMode: boolean,
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>
+}) {
 
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -40,11 +51,16 @@ function HomeHeader() {
     }
   }, [])
 
+
+  function toggleDarkMode() {
+    setDarkMode(!darkMode)
+  }
+
   return (
-    <header className={`h-24 z-50 bg-white flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
+    <header className={`h-24 z-50 bg-white dark:bg-secondary flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
 
       <div className="flex items-center gap-x-10">
-        <Link href={"/"}>
+        <Link href={"/"} className="dark:text-primary dark:fill-primary">
           <div className="flex gap-x-1 items-center">
             <Icon width={30} height={30} />
             <span className="font-bold">Open Tutor</span>
@@ -71,8 +87,17 @@ function HomeHeader() {
         </div>
         <div className="border-l ml-2" />
         <div>
-          <Button variant={"ghost"} className="px-1 sm:px-2 text-slate-400 hover:text-slate-500">
-            <Moon className="w-5 h-5" />
+          <Button 
+            onClick={toggleDarkMode}
+            variant={"ghost"} 
+            className="px-1 sm:px-2 text-slate-400 hover:text-slate-500"
+          >
+            {
+              darkMode ? 
+              <Moon className="w-5 h-5" />
+              :
+              <Sun className="w-5 h-5" />
+            }
           </Button>
         </div>
       </div>
@@ -88,9 +113,9 @@ function Hero() {
 
       <div className="flex flex-col items-center justify-center text-center space-y-6 py-6 md:py-12 lg:py-32">
         <h1 className="text-3xl md:text-5xl md:leading-tight font-bold">
-          <span>Everything you need to </span>
+          <span className="dark:text-primary">Everything you need to </span>
           <span className=" relative whitespace-nowrap">
-            <span className="absolute bg-primary opacity-80 -left-2 -top-1 -bottom-1 -right-2 md:-left-3 md:-top-0 md:-bottom-0 md:-right-3 -rotate-1"></span>
+            <span className="absolute bg-primary dark:bg-slate-900 opacity-80 -left-2 -top-1 -bottom-1 -right-2 md:-left-3 md:-top-0 md:-bottom-0 md:-right-3 -rotate-1"></span>
             <span className="relative text-white">study with AI</span>
           </span>
         </h1>
@@ -211,7 +236,7 @@ function FeatureItemHeading({
   children: React.ReactNode;
 }>) {
   return (
-    <h3 className="text-lg font-bold">
+    <h3 className="text-lg font-bold dark:text-primary">
       { children }
     </h3>
   )
@@ -236,7 +261,7 @@ function FrequentlyAskedQuestions() {
     <section id="faq" className="flex flex-col items-center justify-center my-20">
       <SectionHeading>Got questions?</SectionHeading>
       <SectionSubHeading>We've got answers.</SectionSubHeading>
-      <Accordion type="single" collapsible className="w-full max-w-3xl">
+      <Accordion type="single" collapsible className="w-full max-w-3xl dark:text-primary">
         <AccordionItem value="item-1">
           <AccordionTrigger>Do I need to be a student to use Open Tutor?</AccordionTrigger>
           <AccordionContent>
@@ -293,7 +318,7 @@ function SectionHeading({
   children: React.ReactNode;
 }>) {
   return (
-    <h2 className="font-bold text-3xl md:text-5xl text-center mb-6">
+    <h2 className="font-bold text-3xl md:text-5xl text-center mb-6 dark:text-primary">
       { children }
     </h2>
   )
@@ -315,7 +340,7 @@ function SectionSubHeading({
 
 function Footer() {
   return (
-    <footer className="flex items-center gap-x-1 px-6 pt-5 pb-10">
+    <footer className="flex items-center gap-x-1 px-6 pt-5 pb-10 dark:bg-secondary dark:text-primary">
       <Icon width={25} height={25} /> 
       Built by <Link href={"/"} className="font-medium underline underline-offset-4">Ifeanyi.</Link>
       The source code is available on <Link href={"/"} className="font-medium underline underline-offset-4">Github.</Link>
