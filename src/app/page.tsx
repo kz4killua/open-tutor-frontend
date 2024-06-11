@@ -155,7 +155,7 @@ function Hero() {
 
 function Features() {
   return (
-    <section id="features" className="flex flex-col items-center justify-center max-w-5xl mx-auto mt-10 mb-20 px-5 sm:px-0">
+    <section id="features" className="flex flex-col items-center justify-center max-w-5xl mx-auto pt-0 sm:pt-24 mb-20 px-5 sm:px-0">
       <SectionHeading>Features</SectionHeading>
       <SectionSubHeading>(Includes screenshots from the actual app!)</SectionSubHeading>
       <div className="flex flex-col gap-6 mt-5 w-full">
@@ -261,7 +261,7 @@ function FeatureItemSubHeading({
 
 function FrequentlyAskedQuestions() {
   return (
-    <section id="faq" className="px-7 flex flex-col items-center justify-center my-20">
+    <section id="faq" className="px-7 pt-0 sm:pt-24 flex flex-col items-center justify-center mb-20">
       <SectionHeading>Got questions?</SectionHeading>
       <SectionSubHeading>We've got answers.</SectionSubHeading>
       <Accordion type="single" collapsible className="w-full max-w-3xl dark:text-primary text-left">
@@ -297,18 +297,20 @@ function FrequentlyAskedQuestions() {
 
 function FinalCTA() {
   return (
-    <section className="mt-28 mb-10 px-12 mx-auto max-w-2xl">
+    <section className="pt-0 sm:pt-24 mb-10 px-12 mx-auto max-w-2xl">
       <SectionHeading>
         Ready to try it out?
       </SectionHeading>
       <SectionSubHeading>
-        Sign up today and experience the power of our platform. Let&apos;s build something great together.
+        Sign up today and experience the power of our platform. Let&apos;s up your study game.
       </SectionSubHeading>
       <div className="text-center">
-        <Button className="px-12 h-12">
-          <Rocket className="w-5 h-5 mr-2" />
-          Get started
-        </Button>
+        <Link href={"/accounts/signup"}>
+          <Button className="px-12 h-12">
+            <Rocket className="w-5 h-5 mr-2" />
+            Get started
+          </Button>
+        </Link>
       </div>
     </section>
   )
