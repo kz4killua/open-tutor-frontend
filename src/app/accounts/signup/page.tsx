@@ -15,6 +15,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
+import { Suspense } from 'react'
 
 
 export default function SignUpPage() {
@@ -29,7 +30,9 @@ export default function SignUpPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignUpForm />
+          <Suspense>
+            <SignUpForm />
+          </Suspense>
         </CardContent>
         <CardFooter>
           <p className="text-sm">

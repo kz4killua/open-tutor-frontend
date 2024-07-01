@@ -14,6 +14,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Loader } from "lucide-react"
+import { Suspense } from 'react'
 
 
 export default function SignInPage() {
@@ -28,7 +29,9 @@ export default function SignInPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignInForm />
+          <Suspense>
+            <SignInForm />
+          </Suspense>
         </CardContent>
         <CardFooter>
           <p className="text-sm">
