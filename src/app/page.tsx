@@ -263,7 +263,7 @@ function FrequentlyAskedQuestions() {
   return (
     <section id="faq" className="px-7 pt-0 sm:pt-24 flex flex-col items-center justify-center mb-20">
       <SectionHeading>Got questions?</SectionHeading>
-      <SectionSubHeading>We've got answers.</SectionSubHeading>
+      <SectionSubHeading>We&apos;ve got answers.</SectionSubHeading>
       <Accordion type="single" collapsible className="w-full max-w-3xl dark:text-primary text-left">
         <AccordionItem value="item-1">
           <AccordionTrigger className="text-left">Do I need to be a student to use Open Tutor?</AccordionTrigger>
@@ -284,7 +284,7 @@ function FrequentlyAskedQuestions() {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-4">
-          <AccordionTrigger className="text-left">I'm a developer. Can I contribute?</AccordionTrigger>
+          <AccordionTrigger className="text-left">I&apos;m a developer. Can I contribute?</AccordionTrigger>
           <AccordionContent>
             Yes please! We are currently open-source and accepting contributions. Please check out our Github.
           </AccordionContent>
