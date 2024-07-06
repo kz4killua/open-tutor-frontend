@@ -96,7 +96,7 @@ function SignUpForm() {
     .then(response => {
       // Store the access token and navigate to the next page
       storeAccessToken(response.data.token)
-      router.push(searchParams.get('next') || "/")
+      router.push(searchParams.get('next') || "/documents")
       toast.success("Welcome! We're glad you're here.")
     })
     .catch(() => {
