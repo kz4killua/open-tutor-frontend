@@ -292,7 +292,7 @@ function DocumentMessageInput({
   const ref = useRef<HTMLTextAreaElement>(null)
 
 
-  async function handleClick() {
+  async function handleSend() {
     
     setLoading(true)
 
@@ -375,6 +375,14 @@ function DocumentMessageInput({
   }
 
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
+    }
+  }
+
+
   function adjustTextAreaHeight() {    
     if (ref.current) {
 
@@ -414,13 +422,14 @@ function DocumentMessageInput({
         <Textarea 
           placeholder="Type your message here." 
           value={userInput.query}
+          onKeyDown={handleKeyDown}
           onChange={handleChange}
           className="resize-none min-h-0"
           ref={ref}
           rows={1}
         />
         <StyledTooltip text="Send message">
-          <Button onClick={handleClick}>
+          <Button onClick={handleSend}>
             <CornerDownLeft />
           </Button>
         </StyledTooltip>
