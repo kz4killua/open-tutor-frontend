@@ -20,6 +20,11 @@ export interface DocumentSelection {
   boundingClientRect: DOMRect;
 }
 
+export interface UserInput {
+  query: string;
+  quote: string;
+}
+
 export interface Flashcard {
   id: number;
   referenced_page_number: number;
