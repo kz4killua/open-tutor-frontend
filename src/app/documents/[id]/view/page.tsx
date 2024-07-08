@@ -220,12 +220,19 @@ function DocumentMessages() {
     }
   }, [])
 
+  // Scroll to the bottom when new messages are added.
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }
+  }, [documentMessages])
+
   return (
     <ScrollArea className="grow">
       <div className="divide-y" ref={ref}>
-        { documentMessages.map(message => 
+        {documentMessages.map(message => 
           <DocumentMessage key={message.id} message={message} />
-        ) }
+        )}
       </div>
     </ScrollArea>
   )
