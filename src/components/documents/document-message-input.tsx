@@ -24,6 +24,10 @@ export function DocumentMessageInput({
 
 
   async function handleSend() {
+
+    if (loading || userInput.query.length === 0) {
+      return
+    }
     
     setLoading(true)
 
@@ -46,6 +50,10 @@ export function DocumentMessageInput({
     })
     documentMessagesDispatch({
       type: "ADD", documentMessage: assistantMessage
+    })
+
+    setUserInput({
+      query: "", quote: ""
     })
     
     createDocumentMessage(document.id, userMessage.content, userMessage.quote)
@@ -82,11 +90,6 @@ export function DocumentMessageInput({
           })
         }
       }
-    })
-    .then(() => {
-      setUserInput({
-        query: "", quote: ""
-      })
     })
     .catch((error) => {
 
@@ -160,7 +163,7 @@ export function DocumentMessageInput({
           rows={1}
         />
         <StyledTooltip text="Send message">
-          <Button onClick={handleSend}>
+          <Button onClick={handleSend} disabled={loading || userInput.query.length === 0}>
             <CornerDownLeft />
           </Button>
         </StyledTooltip>
