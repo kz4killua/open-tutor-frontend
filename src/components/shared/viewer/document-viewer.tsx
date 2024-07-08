@@ -15,6 +15,8 @@ import { type Dispatch, type SetStateAction } from "react"
 // This type represents a user uploaded document.
 import { type Document as DocumentType } from "@/types"
 
+import { SelectionListener } from '../selection-listener';
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
@@ -44,23 +46,15 @@ export function DocumentViewer({
     setDocumentWidth(window.innerWidth * 0.95)
   }, [])
 
-  // Listen for text highlights
-  useEffect(() => {
-    const handleSelection = () => {
-      const selection = window.document.getSelection()
-      if (selection && selection.rangeCount > 0) {
-        setSelection({
-          text: selection.toString().trim(),
-          boundingClientRect: selection.getRangeAt(0).getBoundingClientRect()
-        })
-      }
+  function handleSelection(selection: Selection | null) {
+    if (selection && selection.rangeCount > 0) {
+      const rect = selection.getRangeAt(0).getBoundingClientRect()
+      const text = selection.toString().trim()
+      setSelection({ text: text, boundingClientRect: rect })
+    } else {
+      setSelection(null)
     }
-    const page = ref.current;
-    page?.addEventListener('mouseup', handleSelection);
-    return () => {
-      page?.removeEventListener('mouseup', handleSelection)
-    }
-  }, [setSelection])
+  }
 
   function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
     setNumPages(nextNumPages)
@@ -71,18 +65,20 @@ export function DocumentViewer({
   }
 
   return (
-    <div className='rendered-pdf' ref={ref}>
-      <div className="rendered-pdf-container">
-        <div className="rendered-pdf-container-document">
-          <Document file={document.file} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError} options={options}>
-            {Array.from(new Array(numPages), (el, index) => (
-              <Page 
-                key={`page_${index + 1}`} pageNumber={index + 1} width={documentWidth} 
-              />
-            ))}
-          </Document>
+    <SelectionListener onSelection={handleSelection}>
+      <div className='rendered-pdf' ref={ref}>
+        <div className="rendered-pdf-container">
+          <div className="rendered-pdf-container-document">
+            <Document file={document.file} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError} options={options}>
+              {Array.from(new Array(numPages), (el, index) => (
+                <Page 
+                  key={`page_${index + 1}`} pageNumber={index + 1} width={documentWidth} 
+                />
+              ))}
+            </Document>
+          </div>
         </div>
       </div>
-    </div>
+    </SelectionListener>
   )
 }

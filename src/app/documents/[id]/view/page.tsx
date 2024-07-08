@@ -157,18 +157,22 @@ function ActionsMenu({
     }
   }
 
-
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    if (selection?.text) {
-      if (selection.text.length >= 1024) {
-        toast.info("To use document actions, highlight a smaller piece of text.")
-      } else {
-        setOpen(true)
-      }
+    if (!selection || selection.text.length === 0) {
+      setOpen(false)
+    } else if (selection.text.length >= 1024) {
+      toast.info("To use document actions, highlight a smaller piece of text.")
+      setOpen(false)
+    } else {
+      setOpen(true)
     }
   }, [selection])
+
+  if (!selection) {
+    return null
+  }
 
   return (
     <DropdownMenu open={open} onOpenChange={(open) => setOpen(open)} modal={false}>
