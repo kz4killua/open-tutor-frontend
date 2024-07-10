@@ -177,7 +177,7 @@ function ActionsMenu({
           height: selection ? selection.boundingClientRect.height : 0
         }} />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="start" sideOffset={10}>
+      <DropdownMenuContent className="w-56 z-40" align="start" sideOffset={10}>
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

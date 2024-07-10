@@ -33,7 +33,7 @@ export function Header({
   }, [])
 
   return (
-    <header className={`flex z-[60] bg-white items-center sticky top-0 py-5 px-5 h-[${HeaderHeight}px] transition-shadow ${isScrolled ? 'shadow' : ''}`}>
+    <header className={`flex z-50 bg-white items-center sticky top-0 py-5 px-5 h-[${HeaderHeight}px] transition-shadow ${isScrolled ? 'shadow' : ''}`}>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
