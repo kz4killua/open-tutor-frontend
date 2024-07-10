@@ -3,7 +3,8 @@
 import { useDocuments } from "@/app/providers";
 import { Header, HeaderBreadcrumbLink } from "@/components/shared/header";
 import { Button } from "@/components/ui/button";
-import { getFlashcardsList } from "@/services/flashcards";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getEvaluationFeedback, getFlashcardsList } from "@/services/flashcards";
 import { type Document, type Flashcard } from "@/types"
 import { removeDuplicates, shuffleArray } from "@/utilities/arrays";
 import { Check, CheckIcon, RefreshCcw, TrophyIcon, X } from "lucide-react";
@@ -36,7 +37,9 @@ export default function DocumentEvaluationPage({
   })
   const [quizComplete, setQuizComplete] = useState(false)
 
-  const document = documents.find(item => item.id.toString() === params.id)
+  const document = documents.find(
+    item => item.id.toString() === params.id
+  )
 
   const headerlinks: HeaderBreadcrumbLink[] = [
     {
@@ -63,6 +66,7 @@ export default function DocumentEvaluationPage({
       {
         quizComplete ?
         <EvaluationReport 
+          document={document}
           userAnswers={userAnswers} 
           flashcards={flashcards}
         />
@@ -82,22 +86,42 @@ export default function DocumentEvaluationPage({
 
 function EvaluationReport({
   userAnswers,
-  flashcards
+  flashcards,
+  document
 } : {
   userAnswers: React.MutableRefObject<UserAnswers>,
-  flashcards: Flashcard[]
+  flashcards: Flashcard[],
+  document: Document | undefined
 }) {
+
+  const [feedback, setFeedback] = useState<string[]>()
 
   const percentage = userAnswers.current.correct.length / (
     userAnswers.current.correct.length + 
     userAnswers.current.wrong.length
   ) * 100
 
-  const failedFlashcardsReferencePages = removeDuplicates(
-    flashcards.map(f =>
-      f.referenced_page_number
+  useEffect(() => {
+
+    if (document === undefined) {
+      return
+    }
+
+    getEvaluationFeedback(
+      document.id,
+      userAnswers.current.correct, 
+      userAnswers.current.wrong
     )
-  )
+    .then(response => {
+      if (response.status !== 200) {
+        throw new Error("Failed to get evaluation feedback.")
+      }
+      setFeedback(response.data.feedback)
+    })
+    .catch(error => {
+      toast.error(error.message)
+    })
+  }, [])
 
   return (
     <main className="grow flex flex-col items-center justify-center gap-8">
@@ -127,18 +151,19 @@ function EvaluationReport({
 
           <ul className="space-y-2 text-sm text-black">
             {
-              percentage < 100 ?
-              failedFlashcardsReferencePages.map(page => 
-                <li className="flex" key={page}>
-                  <CheckIcon className="w-4 h-4 mr-2 text-green-500" />
-                  Review page {page}
+              feedback !== undefined ?
+              feedback.map((item, index) => 
+                <li key={index} className="flex items-center">
+                  <CheckIcon className="shrink-0 w-4 h-4 mr-2 text-green-500" />
+                  {item}
                 </li>
               )
               :
-              <li className="flex">
-                <CheckIcon className="w-4 h-4 mr-2 text-green-500" />
-                Take a break! Or keep studying. You&apos;ve earned it.
-              </li>
+              Array.from({ length: 3 }, (_, i) => i).map(item => 
+                <li key={item}>
+                  <Skeleton className="h-5 w-full rounded-lg" />
+                </li>
+              )
             }
           </ul>
         </CardContent>
