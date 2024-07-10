@@ -274,39 +274,31 @@ function EvaluationQuiz({
   return (
     <main>
       {
-        loading 
-        ?
-        <div className="grow flex flex-col items-center justify-center">
-          <LoadingAnimation>
-            <div className="font-bold text-gray-700 text-center">
-              Loading...
-            </div>
-          </LoadingAnimation>
-        </div>
-        :
-        <div className="my-5">
-          <Carousel 
-            setApi={setCarouselApi}
-            opts={{
-              dragFree: true,
-              watchDrag: false
-            }}
-          >
-            <CarouselContent>
-              {flashcards.map(flashcard => 
-                <CarouselItem key={flashcard.id}>
-                  <div className="w-full flex justify-center item-center">
-                    <Flashcard 
-                      flashcard={flashcard} 
-                      onCorrectAnswer={onCorrectAnswer}
-                      onWrongAnswer={onWrongAnswer}
-                    />
-                  </div>
-                </CarouselItem>
-              )}
-            </CarouselContent>
-          </Carousel>
-        </div>
+        <LoadingSuspense loading={loading}>
+          <div className="my-5">
+            <Carousel 
+              setApi={setCarouselApi}
+              opts={{
+                dragFree: true,
+                watchDrag: false
+              }}
+            >
+              <CarouselContent>
+                {flashcards.map(flashcard => 
+                  <CarouselItem key={flashcard.id}>
+                    <div className="w-full flex justify-center item-center">
+                      <Flashcard 
+                        flashcard={flashcard} 
+                        onCorrectAnswer={onCorrectAnswer}
+                        onWrongAnswer={onWrongAnswer}
+                      />
+                    </div>
+                  </CarouselItem>
+                )}
+              </CarouselContent>
+            </Carousel>
+          </div>
+        </LoadingSuspense>        
       }
     </main>
   )
@@ -366,21 +358,32 @@ function Flashcard({
 }
 
 
-function LoadingAnimation({
-  children
+function LoadingSuspense({
+  loading, children
 } : {
+  loading: boolean,
   children?: React.ReactNode
 }) {
 
-  const [loading, setLoading] = useState(true)
-
   return (
-    <div>
-      <Lottie 
-        animationData={seeSawAnimation} 
-        onDOMLoaded={() => setLoading(false)}
-      />
-      { !loading && children }
-    </div>
+    <>
+    {
+      loading ?
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <Lottie 
+            animationData={seeSawAnimation} 
+          />
+          <div className="font-semibold sm:text-lg text-gray-700">
+            Hang on. We're preparing a quiz for you.
+          </div>
+        </div>
+      </div>
+      :
+      <>
+        { children }
+      </>
+    }
+    </>
   )
 }
