@@ -23,6 +23,8 @@ import { useRouter } from "next/navigation";
 
 export default function DocumentsPage() {
 
+  const { documents, documentsDispatch } = useDocuments()
+
   const headerlinks = [
     {
       name: "Documents",
@@ -47,7 +49,11 @@ export default function DocumentsPage() {
         <div className="flex justify-end">
           <DocumentAddButton />
         </div>
-        <DocumentsList />
+        {
+          documents.length === 0 ?
+          <BlankSlate /> : 
+          <DocumentsList />
+        }
       </main>
     </div>
   )
@@ -213,5 +219,26 @@ function DocumentAddForm({
         </Button>
       </form>
     </Form>
+  )
+}
+
+
+function BlankSlate() {
+  return (
+    <div className="flex flex-col items-center justify-center my-8 space-y-4">
+      <Image 
+        src="/documents-blank-slate.svg"
+        alt="No Documents"
+        width={300}
+        height={300}
+        className="mb-4"
+      />
+      <h2 className="text-lg font-semibold leading-none tracking-tight">
+        No documents yet
+      </h2>
+      <p className="text-sm text-muted-foreground">
+        Upload a document to get started.
+      </p>
+    </div>
   )
 }
