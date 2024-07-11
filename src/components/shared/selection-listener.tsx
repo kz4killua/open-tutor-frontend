@@ -36,7 +36,7 @@ export function SelectionListener({
     if (!isMouseDown) {
       onSelection(selection)
     }
-  }, [selection, onSelection, isMouseDown])
+  }, [selection, isMouseDown])
 
   useEffect(() => {
     document.addEventListener('selectionchange', handleSelectionChange);
