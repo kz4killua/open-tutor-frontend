@@ -375,7 +375,7 @@ function LoadingSuspense({
             animationData={seeSawAnimation} 
           />
           <div className="font-semibold sm:text-lg text-gray-700">
-            Hang on. We're preparing a quiz for you.
+            Hang on. We&apos;re preparing a quiz for you.
           </div>
         </div>
       </div>

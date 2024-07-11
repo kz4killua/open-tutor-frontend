@@ -36,14 +36,14 @@ export function SelectionListener({
     if (!isMouseDown) {
       onSelection(selection)
     }
-  }, [selection, isMouseDown])
+  }, [selection, onSelection, isMouseDown])
 
   useEffect(() => {
     document.addEventListener('selectionchange', handleSelectionChange);
     return () => {
       document.removeEventListener('selectionchange', handleSelectionChange);
     };
-  }, [handleSelectionChange]);
+  }, []);
 
   return (
     <div ref={ref} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
