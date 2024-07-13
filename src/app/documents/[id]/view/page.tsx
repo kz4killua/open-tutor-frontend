@@ -104,7 +104,11 @@ function SidePanel({
           <SheetTitle>Chat with an AI.</SheetTitle>
         </SheetHeader>
         <DocumentMessages />
-        <DocumentMessageInput document={document} userInput={userInput} setUserInput={setUserInput} />
+        <DocumentMessageInput 
+          document={document} 
+          userInput={userInput} 
+          setUserInput={setUserInput} 
+        />
       </SheetContent>
     </Sheet>
   )

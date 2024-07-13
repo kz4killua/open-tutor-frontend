@@ -3,7 +3,9 @@ import { Monitor, User } from 'lucide-react'
 import { useDocumentMessages } from "@/app/providers"
 import { type DocumentMessage } from "@/types"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import * as RadixScrollArea from "@radix-ui/react-scroll-area"
 import { FormattedMarkdown } from './formatted-markdown'
+
 
 
 export function DocumentMessages() {
@@ -26,13 +28,21 @@ export function DocumentMessages() {
   }, [documentMessages])
 
   return (
-    <ScrollArea className="grow">
-      <div className="divide-y" ref={ref}>
-        {documentMessages.map(message => 
-          <DocumentMessage key={message.id} message={message} />
-        )}
-      </div>
-    </ScrollArea>
+    <RadixScrollArea.Root className='grow relative overflow-hidden'>
+      {/* https://github.com/radix-ui/primitives/issues/926#issuecomment-1447283516 */}
+      <RadixScrollArea.Viewport className="h-full w-full rounded-[inherit] [&>div]:!block overscroll-contain">
+        <div className='divide-y pr-[15px]'>
+          {documentMessages.map(message => 
+            <DocumentMessage key={message.id} message={message} />
+          )}
+        </div>
+        <div ref={ref} />
+      </RadixScrollArea.Viewport>
+      <RadixScrollArea.ScrollAreaScrollbar orientation="vertical" className="h-full w-2.5 border-l border-l-transparent p-[1px]">
+        <RadixScrollArea.ScrollAreaThumb className="relative flex-1 rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer" />
+      </RadixScrollArea.ScrollAreaScrollbar>
+      <RadixScrollArea.Corner />
+    </RadixScrollArea.Root>
   )
 }
 
@@ -47,7 +57,7 @@ function DocumentMessage({
       <div>
         { message.role === 'user' ? <DocumentMessageUserIcon /> : <DocumentMessageAssistantIcon /> }
       </div>
-      <div className="w-full">
+      <div className="w-full overflow-x-auto">
         { message.role === 'user' && message.quote &&
           <div className="mb-1">
             <span className="text-sm text-slate-500">
@@ -55,7 +65,7 @@ function DocumentMessage({
             </span>
           </div>
         }
-        <div>
+        <div className='overflow-x-auto'>
           <FormattedMarkdown>
             { message.content }
           </FormattedMarkdown>
