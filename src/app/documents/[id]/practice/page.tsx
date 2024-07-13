@@ -54,7 +54,7 @@ export default function DocumentEvaluationPage({
       href: `/documents/${params.id}`
     })
     headerlinks.push({
-      name: "Evaluate",
+      name: "Practice",
       href: window.location.href
     })
   }

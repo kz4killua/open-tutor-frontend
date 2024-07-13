@@ -2,7 +2,7 @@
 
 import { Header } from "@/components/shared/header";
 import { Button } from "@/components/ui/button";
-import { Download, Trash } from "lucide-react";
+import { BookOpen, Download, GraduationCap, Pencil, Trash } from "lucide-react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { HeaderBreadcrumbLink } from "@/components/shared/header";
 import { useDocuments } from "@/app/providers";
@@ -51,12 +51,12 @@ export default function DocumentPage({
           <div className="flex items-center justify-center gap-x-5">
             <Link href={`/documents/${params.id}/view`}>
               <Button variant={"default"} className="w-32 py-6">
-                Read
+                <BookOpen size={16} className="shrink-0 mr-2" /> Read
               </Button>
             </Link>
-            <Link href={`/documents/${params.id}/evaluate`}>
+            <Link href={`/documents/${params.id}/practice`}>
               <Button variant={"secondary"} className="w-32 py-6">
-                Evaluate
+                <Pencil size={16} className="shrink-0 mr-2" /> Practice
               </Button>
             </Link>
           </div>
