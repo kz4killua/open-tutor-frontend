@@ -92,6 +92,8 @@ function SidePanel({
   setUserInput: Dispatch<SetStateAction<UserInput>>
 }) {
 
+  const [streaming, setStreaming] = useState(false)
+
   return (
     <Sheet open={sidePanelOpen} onOpenChange={(value) => setSidePanelOpen(value)} modal={false}>
       <StyledTooltip text="Ask AI">
@@ -107,12 +109,17 @@ function SidePanel({
             <SheetTitle>Chat with an AI.</SheetTitle>
           </SheetHeader>
         </div>
-        <DocumentMessages />
+        <DocumentMessages 
+          streaming={streaming}
+          setStreaming={setStreaming}
+        />
         <div className="p-6">
           <DocumentMessageInput 
             document={document} 
             userInput={userInput} 
             setUserInput={setUserInput}
+            streaming={streaming}
+            setStreaming={setStreaming}
           />
         </div>
       </SheetContent>

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Monitor, User } from 'lucide-react'
+import { Loader, Monitor, User } from 'lucide-react'
 import { useDocumentMessages } from "@/app/providers"
 import { type DocumentMessage } from "@/types"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -8,7 +8,13 @@ import { FormattedMarkdown } from './formatted-markdown'
 
 
 
-export function DocumentMessages() {
+export function DocumentMessages({
+  streaming, 
+  setStreaming
+} : {
+  streaming: boolean,
+  setStreaming: (value: boolean) => void
+}) {
 
   const { documentMessages, documentMessagesDispatch } = useDocumentMessages()
   const ref = useRef<HTMLDivElement>(null)
@@ -27,13 +33,19 @@ export function DocumentMessages() {
     }
   }, [documentMessages])
 
+  // Get the ID of the last message.
+
   return (
     <RadixScrollArea.Root className='grow relative overflow-hidden'>
       {/* https://github.com/radix-ui/primitives/issues/926#issuecomment-1447283516 */}
       <RadixScrollArea.Viewport className="h-full w-full rounded-[inherit] [&>div]:!block overscroll-contain">
         <div className='divide-y px-6 pr-[15px]'>
-          {documentMessages.map(message => 
-            <DocumentMessage key={message.id} message={message} />
+          {documentMessages.map((message, index) => 
+            <DocumentMessage 
+              key={message.id} 
+              message={message} 
+              streaming={streaming && index === documentMessages.length - 1}
+            />
           )}
         </div>
         <div ref={ref} />
@@ -48,9 +60,11 @@ export function DocumentMessages() {
 
 
 function DocumentMessage({
-  message
+  message, 
+  streaming
 } : {
-  message: DocumentMessage
+  message: DocumentMessage,
+  streaming: boolean
 }) {
   return (
     <div className="flex flex-row gap-x-4 py-5">
@@ -69,6 +83,11 @@ function DocumentMessage({
           <FormattedMarkdown>
             { message.content }
           </FormattedMarkdown>
+          
+          {
+            streaming && message.role === 'assistant' && 
+            <DocumentMessageStreamingIcon />
+          }          
         </div>
       </div>
     </div>
@@ -93,3 +112,11 @@ function DocumentMessageAssistantIcon() {
   )
 }
 
+
+function DocumentMessageStreamingIcon() {
+  return (
+    <div className='h-7 flex items-center justify-center'>
+      <Loader size={15} className='animate-spin'/>
+    </div>
+  )
+}

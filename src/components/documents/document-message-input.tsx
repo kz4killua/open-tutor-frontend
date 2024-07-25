@@ -11,25 +11,30 @@ import { X, CornerDownLeft } from 'lucide-react'
 
 
 export function DocumentMessageInput({
-  document, userInput, setUserInput
+  document, 
+  userInput, 
+  setUserInput,
+  streaming,
+  setStreaming
 } : {
   document: Document, 
   userInput: UserInput,
-  setUserInput: Dispatch<SetStateAction<UserInput>>
+  setUserInput: Dispatch<SetStateAction<UserInput>>,
+  streaming: boolean,
+  setStreaming: (value: boolean) => void
 }) {
 
   const { documentMessages, documentMessagesDispatch } = useDocumentMessages()
-  const [loading, setLoading] = useState(false)
   const ref = useRef<HTMLTextAreaElement>(null)
 
 
   async function handleSend() {
 
-    if (loading || userInput.query.length === 0) {
+    if (streaming || userInput.query.length === 0) {
       return
     }
     
-    setLoading(true)
+    setStreaming(true)
 
     const userMessage: DocumentMessage = {
       id: -1, 
@@ -104,7 +109,7 @@ export function DocumentMessageInput({
 
     })
     .finally(() => {
-      setLoading(false)
+      setStreaming(false)
     })
   }
 
@@ -163,7 +168,7 @@ export function DocumentMessageInput({
           rows={1}
         />
         <StyledTooltip text="Send message">
-          <Button onClick={handleSend} disabled={loading || userInput.query.length === 0}>
+          <Button onClick={handleSend} disabled={streaming || userInput.query.length === 0}>
             <CornerDownLeft />
           </Button>
         </StyledTooltip>
