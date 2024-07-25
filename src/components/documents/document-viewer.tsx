@@ -15,7 +15,7 @@ import { type Dispatch, type SetStateAction } from "react"
 // This type represents a user uploaded document.
 import { type Document as DocumentType } from "@/types"
 
-import { SelectionListener } from '../selection-listener';
+import { SelectionListener } from '../shared/selection-listener';
 import { useZoomLevel } from '@/app/providers';
 
 
