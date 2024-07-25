@@ -2,13 +2,14 @@
 
 import { Document, DocumentMessage } from "@/types";
 import { DocumentsAction } from "@/reducers/documentsReducer";
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useState } from "react";
 import documentsReducer from "@/reducers/documentsReducer";
 import documentMessagesReducer, { DocumentMessagesAction } from "@/reducers/documentMessagesReducer";
 
 
 const DocumentsContext = createContext<{ documents: Document[], documentsDispatch: React.Dispatch<DocumentsAction> } | undefined>(undefined)
 const DocumentMessagesContext = createContext<{ documentMessages: DocumentMessage[], documentMessagesDispatch: React.Dispatch<DocumentMessagesAction> } | undefined>(undefined)
+const ZoomLevelContext = createContext<{ zoomLevel: number, setZoomLevel: React.Dispatch<React.SetStateAction<number>> } | undefined>(undefined)
 
 
 function DocumentsProvider({ 
@@ -43,6 +44,22 @@ function DocumentMessagesProvider({
 }
 
 
+function ZoomLevelProvider({
+  children
+} : Readonly<{
+  children: React.ReactNode;
+}>) {
+
+  const [zoomLevel, setZoomLevel] = useState(1.0)
+
+  return (
+    <ZoomLevelContext.Provider value={{ zoomLevel, setZoomLevel }}>
+      { children }
+    </ZoomLevelContext.Provider>
+  )
+}
+
+
 export function useDocuments() {
   const context = useContext(DocumentsContext)
   if (!context) {
@@ -61,6 +78,15 @@ export function useDocumentMessages() {
 }
 
 
+export function useZoomLevel() {
+  const context = useContext(ZoomLevelContext)
+  if (!context) {
+    throw new Error("useZoomLevel() must be used within the appropriate provider.")
+  }
+  return context
+}
+
+
 export function Providers({ 
   children 
 } : Readonly<{
@@ -69,7 +95,9 @@ export function Providers({
   return (
     <DocumentsProvider>
       <DocumentMessagesProvider>
-        { children }
+        <ZoomLevelProvider>
+          { children }
+        </ZoomLevelProvider>
       </DocumentMessagesProvider>
     </DocumentsProvider>    
   )

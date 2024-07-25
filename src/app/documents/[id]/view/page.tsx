@@ -14,6 +14,7 @@ import { toast } from "sonner"
 import StyledTooltip from "@/components/shared/styled-tooltip"
 import { DocumentMessages } from "@/components/documents/document-messages"
 import { DocumentMessageInput } from "@/components/documents/document-message-input"
+import Toolbar from "@/components/documents/toolbar"
 
 
 export default function DocumentViewPage({ 
@@ -52,9 +53,9 @@ export default function DocumentViewPage({
 
   return (
     <div className="flex flex-col">
-      <Header links={headerlinks} />
+      <Header links={headerlinks} className="shadow" />
       { document &&
-        <div>
+        <div className="bg-gray-50">
           <main>
             <ActionsMenu 
               selection={selection}  
@@ -72,6 +73,7 @@ export default function DocumentViewPage({
               document={document} userInput={userInput} 
               setUserInput={setUserInput} 
             />
+            <Toolbar />
           </main>
         </div>
       }

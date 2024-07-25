@@ -16,6 +16,7 @@ import { type Dispatch, type SetStateAction } from "react"
 import { type Document as DocumentType } from "@/types"
 
 import { SelectionListener } from '../selection-listener';
+import { useZoomLevel } from '@/app/providers';
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -39,9 +40,11 @@ export function DocumentViewer({
 
   const [numPages, setNumPages] = useState<number>()
   const [documentWidth, setDocumentWidth] = useState<number>()
+  const { zoomLevel, setZoomLevel } = useZoomLevel()
 
   const ref = useRef<HTMLDivElement>(null)
 
+  // *Note*: The document width is separate from the scale (zoom level)
   useEffect(() => {
     setDocumentWidth(window.innerWidth * 0.95)
   }, [])
@@ -72,7 +75,7 @@ export function DocumentViewer({
             <Document file={document.file} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError} options={options}>
               {Array.from(new Array(numPages), (el, index) => (
                 <Page 
-                  key={`page_${index + 1}`} pageNumber={index + 1} width={documentWidth} 
+                  key={index} pageNumber={index + 1} width={documentWidth} scale={zoomLevel}
                 />
               ))}
             </Document>
