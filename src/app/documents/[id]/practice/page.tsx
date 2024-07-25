@@ -196,41 +196,20 @@ function EvaluationQuiz({
   const [loading, setLoading] = useState(true)
   const [carouselApi, setCarouselApi] = React.useState<CarouselApi>()
   const [activeFlashcardIndex, setActiveFlashcardIndex] = useState(0)
-  const { documents, documentsDispatch } = useDocuments()
 
 
   useEffect(() => {
 
     const fetchFlashcards = async () => {
       if (document) {
-
-        const MAX_FLASHCARDS = 10
-        let list: Flashcard[] = []
-
-        let pages = Array.from({ length: document.page_count }, (_, i) => i + 1)
-        pages = shuffleArray(pages)
-
-        for (const page of pages) {
-
-          const response = await getFlashcardsList(document.id, page)
-          if (response.status === 200) {
-            list = [...list, ...response.data]
-          }
-
-          // Limit the number of flashcards that are fetched
-          if (list.length >= MAX_FLASHCARDS) {
-            list = list.slice(0, MAX_FLASHCARDS)
-            break
-          }
-        }
-
-        setFlashcards(list)
+        const response = await getFlashcardsList(document.id)
+        setFlashcards(response.data)
         setLoading(false)
       }
     }
 
     fetchFlashcards()
-  }, [documents, document, setFlashcards])
+  }, [document, setFlashcards])
 
 
   useEffect(() => {
@@ -280,7 +259,8 @@ function EvaluationQuiz({
               setApi={setCarouselApi}
               opts={{
                 dragFree: true,
-                watchDrag: false
+                watchDrag: false,
+                duration: 20
               }}
             >
               <CarouselContent>
