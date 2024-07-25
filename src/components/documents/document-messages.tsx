@@ -31,7 +31,7 @@ export function DocumentMessages() {
     <RadixScrollArea.Root className='grow relative overflow-hidden'>
       {/* https://github.com/radix-ui/primitives/issues/926#issuecomment-1447283516 */}
       <RadixScrollArea.Viewport className="h-full w-full rounded-[inherit] [&>div]:!block overscroll-contain">
-        <div className='divide-y pr-[15px]'>
+        <div className='divide-y px-6 pr-[15px]'>
           {documentMessages.map(message => 
             <DocumentMessage key={message.id} message={message} />
           )}

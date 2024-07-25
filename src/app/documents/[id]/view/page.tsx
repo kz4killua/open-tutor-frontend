@@ -101,16 +101,20 @@ function SidePanel({
           </Button>
         </SheetTrigger>
       </StyledTooltip>
-      <SheetContent className="flex flex-col w-full max-w-full sm:w-[500px] sm:max-w-[500px]">
-        <SheetHeader>
-          <SheetTitle>Chat with an AI.</SheetTitle>
-        </SheetHeader>
+      <SheetContent className="flex flex-col gap-y-0 w-full max-w-full sm:w-[500px] sm:max-w-[500px] p-0">
+        <div className="p-6">
+          <SheetHeader>
+            <SheetTitle>Chat with an AI.</SheetTitle>
+          </SheetHeader>
+        </div>
         <DocumentMessages />
-        <DocumentMessageInput 
-          document={document} 
-          userInput={userInput} 
-          setUserInput={setUserInput} 
-        />
+        <div className="p-6">
+          <DocumentMessageInput 
+            document={document} 
+            userInput={userInput} 
+            setUserInput={setUserInput}
+          />
+        </div>
       </SheetContent>
     </Sheet>
   )
