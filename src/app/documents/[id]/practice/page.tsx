@@ -322,12 +322,12 @@ function Flashcard({
   return (
     <div className="w-full flex flex-col items-center gap-5 px-5">
 
-      <div className="group w-full max-w-2xl h-96 [perspective:1000px] text-center" onClick={handleClick}>
+      <div className="group w-full max-w-2xl h-96 [perspective:1000px] text-center text-lg" onClick={handleClick}>
         <div className={`relative size-full border rounded-xl shadow-lg transition-all duration-300 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
-          <div className="absolute inset-0 flex items-center justify-center p-2 [backface-visibility:hidden]">
+          <div className="absolute inset-0 flex items-center justify-center p-10 [backface-visibility:hidden]">
             {flashcard.front}
           </div>
-          <div className="absolute inset-0 flex items-center justify-center p-2 absolute inset-0 [transform:rotateY(180deg)] [backface-visibility:hidden]">
+          <div className="absolute inset-0 flex items-center justify-center p-10 absolute inset-0 [transform:rotateY(180deg)] [backface-visibility:hidden]">
             {flashcard.back}
           </div>
         </div>
