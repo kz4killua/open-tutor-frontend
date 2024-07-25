@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import './document-viewer.modules.css';
 
 import { pdfjs, Document, Page } from 'react-pdf';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
@@ -30,6 +30,11 @@ const options = {
 };
 
 
+interface UpdatedPDFPageProxy extends PDFPageProxy {
+  height: number
+}
+
+
 export function DocumentViewer({
   document, selection, setSelection
 } : {
@@ -40,7 +45,9 @@ export function DocumentViewer({
 
   const [numPages, setNumPages] = useState<number>()
   const [documentWidth, setDocumentWidth] = useState<number>()
+  const [documentHeight, setDocumentHeight] = useState<number>()
   const { zoomLevel, setZoomLevel } = useZoomLevel()
+  const [loadedPages, setLoadedPages] = useState<number[]>([0])
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -50,6 +57,7 @@ export function DocumentViewer({
   }, [])
 
   function handleSelection(selection: Selection | null) {
+    // Keep track of user selected text and the bounding rectangles.
     if (selection && selection.rangeCount > 0) {
       const rect = selection.getRangeAt(0).getBoundingClientRect()
       const text = selection.toString().trim()
@@ -67,21 +75,64 @@ export function DocumentViewer({
     toast.error("Oops. We couldn't load this document. Try again.")
   }
 
+  function onPageLoadSuccess(page: UpdatedPDFPageProxy) {
+    // Set the document height based on the first page.
+    if (page._pageIndex === 0) {
+      setDocumentHeight(page.height)
+    }
+    // Stop at the last page.
+    if (numPages === undefined || page._pageIndex === numPages - 1) {
+      return
+    }
+    // Load each next page one at a time.
+    if (!loadedPages.includes(page._pageIndex + 1)) {
+      setLoadedPages([...loadedPages, page._pageIndex + 1])
+    }
+  }
+
+  function onPageLoadError(page: PDFPageProxy) {
+    toast.error("We encountered an error loading this document. Please try again.")
+  }
+
   return (
     <SelectionListener onSelection={handleSelection}>
       <div className='rendered-pdf' ref={ref}>
         <div className="rendered-pdf-container">
           <div className="rendered-pdf-container-document">
             <Document file={document.file} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError} options={options}>
-              {Array.from(new Array(numPages), (el, index) => (
-                <Page 
-                  key={index} pageNumber={index + 1} width={documentWidth} scale={zoomLevel}
-                />
-              ))}
+              {
+                Array.from(new Array(numPages), (element, index) => (
+                  loadedPages.includes(index) ?
+                    <Page
+                      key={index}
+                      pageNumber={index + 1}
+                      width={documentWidth}
+                      scale={zoomLevel}
+                      onLoadSuccess={onPageLoadSuccess}
+                      onError={onPageLoadError}
+                    /> 
+                    :
+                    documentWidth && documentHeight && <PageSkeleton
+                      key={index}
+                      width={documentWidth * zoomLevel}
+                      height={documentHeight}
+                    />  
+                ))
+              }
             </Document>
           </div>
         </div>
       </div>
     </SelectionListener>
+  )
+}
+
+
+function PageSkeleton({ width, height }: { width: number, height: number }) {
+  return (
+    <div 
+      className="react-pdf__Page" 
+      style={{ width: width, height: height }} 
+    />
   )
 }
