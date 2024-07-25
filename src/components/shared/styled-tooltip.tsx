@@ -14,7 +14,7 @@ export default function StyledTooltip({
         <TooltipTrigger asChild>
           { children }
         </TooltipTrigger>
-        <TooltipContent className="mb-1">
+        <TooltipContent className="mb-1 bg-gray-800 text-white font-medium">
           <p>{ text }</p>
         </TooltipContent>
       </Tooltip>

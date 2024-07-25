@@ -2,6 +2,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Icon } from "@/components/shared/icon"
 import React from "react";
 import { useState, useEffect } from "react";
+import clsx from "clsx";
 
 
 export interface HeaderBreadcrumbLink {
@@ -14,9 +15,10 @@ export const HeaderHeight = 65
 
 
 export function Header({ 
-  links 
+  links, className
 } : { 
-  links: HeaderBreadcrumbLink[] 
+  links: HeaderBreadcrumbLink[],
+  className?: string
 }) {
 
   const [isScrolled, setIsScrolled] = useState(false)
@@ -33,7 +35,13 @@ export function Header({
   }, [])
 
   return (
-    <header className={`flex z-50 bg-white items-center sticky top-0 py-5 px-5 h-[${HeaderHeight}px] transition-shadow ${isScrolled ? 'shadow' : ''}`}>
+    <header 
+      className={clsx(
+        `flex z-50 bg-white items-center sticky top-0 py-5 px-5 h-[${HeaderHeight}px] transition-shadow`,
+        isScrolled && 'shadow',
+        className
+      )}
+    >
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
