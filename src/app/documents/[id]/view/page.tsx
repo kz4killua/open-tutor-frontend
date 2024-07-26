@@ -94,6 +94,12 @@ function SidePanel({
 
   const [streaming, setStreaming] = useState(false)
 
+  // Disable Microsoft Edge's text selection popup.
+  // https://learn.microsoft.com/en-us/answers/questions/1508004/on-microsoft-edge-as-a-developer-who-runs-a-websit
+  useEffect(() => {
+    window.onmouseup = event => event.preventDefault();
+  }, [])
+
   return (
     <Sheet open={sidePanelOpen} onOpenChange={(value) => setSidePanelOpen(value)} modal={false}>
       <StyledTooltip text="Ask AI">
