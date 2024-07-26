@@ -1,27 +1,26 @@
 "use client"
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+// https://github.com/wojtekmaj/react-pdf/wiki/Upgrade-guide-from-version-8.x-to-9.x
+import 'core-js/proposals/promise-with-resolvers';
+
+import React, { useEffect, useRef, useState } from 'react';
+import type { Dispatch, SetStateAction } from "react"
+import { type DocumentSelection } from '@/types';
+import { type Document as DocumentType } from "@/types"
 import { toast } from 'sonner';
+import { SelectionListener } from '@/components/shared/selection-listener';
+import { useZoomLevel } from '@/app/providers';
 import './document-viewer.modules.css';
 
+
+// https://github.com/wojtekmaj/react-pdf/blob/main/README.md
 import { pdfjs, Document, Page } from 'react-pdf';
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-import { type DocumentSelection } from '@/types';
-import { type Dispatch, type SetStateAction } from "react"
-
-// This type represents a user uploaded document.
-import { type Document as DocumentType } from "@/types"
-
-import { SelectionListener } from '../shared/selection-listener';
-import { useZoomLevel } from '@/app/providers';
-
-
-// https://github.com/wojtekmaj/react-pdf/blob/main/README.md
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
+  'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url,
 ).toString();
 
