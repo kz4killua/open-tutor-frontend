@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import './document-viewer.modules.css';
 
@@ -19,6 +19,7 @@ import { SelectionListener } from '../shared/selection-listener';
 import { useZoomLevel } from '@/app/providers';
 
 
+// https://github.com/wojtekmaj/react-pdf/blob/main/README.md
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
   import.meta.url,
@@ -30,31 +31,21 @@ const options = {
 };
 
 
-interface UpdatedPDFPageProxy extends PDFPageProxy {
-  height: number
-}
-
-
 export function DocumentViewer({
-  document, selection, setSelection
+  document, 
+  selection, 
+  setSelection
 } : {
   document: DocumentType, 
   selection: DocumentSelection | null,
   setSelection: Dispatch<SetStateAction<DocumentSelection | null>>
 }) {
 
-  const [numPages, setNumPages] = useState<number>()
-  const [documentWidth, setDocumentWidth] = useState<number>()
-  const [documentHeight, setDocumentHeight] = useState<number>()
   const { zoomLevel, setZoomLevel } = useZoomLevel()
-  const [loadedPages, setLoadedPages] = useState<number[]>([0])
-
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [pages, setPages] = useState<PDFPageProxy[]>([])
   const ref = useRef<HTMLDivElement>(null)
 
-  // *Note*: The document width is separate from the scale (zoom level)
-  useEffect(() => {
-    setDocumentWidth(window.innerWidth * 0.95)
-  }, [])
 
   function handleSelection(selection: Selection | null) {
     // Keep track of user selected text and the bounding rectangles.
@@ -67,31 +58,20 @@ export function DocumentViewer({
     }
   }
 
-  function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
-    setNumPages(nextNumPages)
+  async function onDocumentLoadSuccess(pdf: PDFDocumentProxy) {    
+    const pages: PDFPageProxy[] = []
+    for (let i = 1; i <= pdf.numPages; i++) {
+      pages.push(await pdf.getPage(i))
+    }
+    // By default, zoom the (first) page to fill the screen.
+    if (pages.length) {
+      setZoomLevel((window.innerWidth * 0.95) / pages[0].view[2])
+    }
+    setPages(pages)
   }
 
   function onDocumentLoadError() {
     toast.error("Oops. We couldn't load this document. Try again.")
-  }
-
-  function onPageLoadSuccess(page: UpdatedPDFPageProxy) {
-    // Set the document height based on the first page.
-    if (page._pageIndex === 0) {
-      setDocumentHeight(page.height)
-    }
-    // Stop at the last page.
-    if (numPages === undefined || page._pageIndex === numPages - 1) {
-      return
-    }
-    // Load each next page one at a time.
-    if (!loadedPages.includes(page._pageIndex + 1)) {
-      setLoadedPages([...loadedPages, page._pageIndex + 1])
-    }
-  }
-
-  function onPageLoadError(page: PDFPageProxy) {
-    toast.error("We encountered an error loading this document. Please try again.")
   }
 
   return (
@@ -99,24 +79,22 @@ export function DocumentViewer({
       <div className='rendered-pdf' ref={ref}>
         <div className="rendered-pdf-container">
           <div className="rendered-pdf-container-document">
-            <Document file={document.file} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError} options={options}>
+            <Document 
+              file={document.file} 
+              onLoadSuccess={onDocumentLoadSuccess} 
+              onLoadError={onDocumentLoadError} 
+              options={options}
+            >
               {
-                Array.from(new Array(numPages), (element, index) => (
-                  loadedPages.includes(index) ?
-                    <Page
-                      key={index}
-                      pageNumber={index + 1}
-                      width={documentWidth}
-                      scale={zoomLevel}
-                      onLoadSuccess={onPageLoadSuccess}
-                      onError={onPageLoadError}
-                    /> 
-                    :
-                    documentWidth && documentHeight && <PageSkeleton
-                      key={index}
-                      width={documentWidth * zoomLevel}
-                      height={documentHeight}
-                    />  
+                pages.map(page => (
+                  <DocumentPage
+                    key={page.pageNumber}
+                    pageNumber={page.pageNumber}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    pageHeight={page.view[3]}
+                    pageWidth={page.view[2]}
+                  />
                 ))
               }
             </Document>
@@ -128,11 +106,117 @@ export function DocumentViewer({
 }
 
 
-function PageSkeleton({ width, height }: { width: number, height: number }) {
+function DocumentPage({ 
+  pageNumber, 
+  pageWidth,
+  pageHeight,
+  currentPage,
+  setCurrentPage,
+} : { 
+  pageNumber: number, 
+  pageWidth: number,
+  pageHeight: number,
+  currentPage: number,
+  setCurrentPage: (pageNumber: number) => void,
+}) {
+
+  const ref = useRef<HTMLDivElement>(null)
+  const { zoomLevel, setZoomLevel } = useZoomLevel()
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  // Only load pages that are within 2 pages of the current page.
+  const isWithinRange = Math.abs(currentPage - pageNumber) <= 2
+  
+  // Use an intersection observer to load pages as they come into view.
+  useEffect(() => {
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setCurrentPage(pageNumber)
+        }
+      },
+      { threshold: 0.5 / zoomLevel }
+    )
+
+    const element = ref.current
+
+    if (element) {
+      observer.observe(element)
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element)
+      }
+    }
+  }, [pageNumber, zoomLevel, setCurrentPage])
+
+  useEffect(() => {
+    setIsLoaded(false)
+  }, [isWithinRange, zoomLevel])
+
+  function onRenderSuccess(page: PDFPageProxy) {
+    setIsLoaded(true)
+  }
+
+  function onPageLoadError(page: PDFPageProxy) {
+    toast.error("We encountered an error loading this document. Please try again.")
+  }
+
+  const fallback = (
+    <PageSkeleton 
+      width={pageWidth} 
+      height={pageHeight} 
+      zoomLevel={zoomLevel}
+    />
+  )
+
+  const element = (
+    <Page
+      pageNumber={pageNumber}
+      width={pageWidth}
+      scale={zoomLevel}
+      onRenderSuccess={onRenderSuccess}
+      onError={onPageLoadError}
+    />
+  )
+
+  return (
+    <div ref={ref}>
+      {
+        isWithinRange ? 
+        <>
+          {/* Only display the page when it is fully loaded. */}
+          <div className={`${isLoaded ? 'hidden' : 'block'}`}>
+            {fallback}
+          </div> 
+          <div className={`${isLoaded ? 'block' : 'hidden'}`}>
+            {element}
+          </div>
+        </>
+        :
+        fallback
+      }
+    </div>
+  )
+}
+
+
+function PageSkeleton({ 
+  width, 
+  height,
+  zoomLevel 
+} : { 
+  width: number, 
+  height: number,
+  zoomLevel: number
+}) {
+
   return (
     <div 
       className="react-pdf__Page" 
-      style={{ width: width, height: height }} 
+      style={{ width: width * zoomLevel, height: height * zoomLevel }} 
     />
   )
 }
