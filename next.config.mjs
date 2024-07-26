@@ -14,6 +14,9 @@ const nextConfig = {
 
     return config;
   },
+
+  // https://github.com/wojtekmaj/react-pdf/wiki/Upgrade-guide-from-version-8.x-to-9.x
+  swcMinify: false,
 };
 
 export default nextConfig;
