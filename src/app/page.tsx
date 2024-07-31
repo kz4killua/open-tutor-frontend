@@ -2,28 +2,26 @@
 
 import { Icon } from "@/components/shared/icon";
 import { Button } from "@/components/ui/button";
-import { Github, Moon, Rocket, Sun } from "lucide-react";
+import { Rocket } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import SparklesText from "@/components/magicui/sparkles-text";
+import clsx from "clsx";
 
 
 export default function Home() {
 
-  const [darkMode, setDarkMode] = useState(false)
 
   return (
-    <div className={`${darkMode ? "dark" : ""} transition-colors duration-700`}>
-      <HomeHeader 
-        darkMode={darkMode} 
-        setDarkMode={setDarkMode} 
-      />
+    <div className="transition-colors duration-700">
+      <Header />
       <main className="pb-20 dark:bg-secondary">
         <Hero />
         <Features />
         <FrequentlyAskedQuestions />
-        <FinalCTA />
+        <CTA />
       </main>
       <Footer />
     </div>
@@ -31,16 +29,11 @@ export default function Home() {
 }
 
 
-function HomeHeader({
-  darkMode, setDarkMode
-} : {
-  darkMode: boolean,
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+function Header() {
 
   const [isScrolled, setIsScrolled] = useState(false)
 
-  // Add a shadow when the user scrolls
+  // Add a shadow when the user scrolls down
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40)
@@ -52,15 +45,11 @@ function HomeHeader({
   }, [])
 
 
-  function toggleDarkMode() {
-    setDarkMode(!darkMode)
-  }
-
   return (
-    <header className={`h-24 z-50 bg-white dark:bg-secondary flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
+    <header className={`h-20 z-50 bg-background flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
 
       <div className="flex items-center gap-x-10">
-        <Link href={"/"} className="dark:text-primary dark:fill-primary">
+        <Link href={"/"}>
           <div className="flex gap-x-1 items-center">
             <Icon width={30} height={30} />
             <span className="font-bold">Open Tutor</span>
@@ -72,36 +61,18 @@ function HomeHeader({
         </nav>
       </div>
 
-      <div className="flex gap-x-1 sm:gap-x-4">
-        <div className="flex gap-x-3 items-center">
-          <Link href={"/accounts/signup"}>
-            <Button className="hidden sm:block">
-              Sign up
-            </Button>
-          </Link>
-          <Link href={"/accounts/signin"}>
-            <Button variant={"secondary"}>
-              Sign in
-            </Button>
-          </Link>
-        </div>
-        <div className="border-l ml-2" />
-        <div>
-          <Button 
-            onClick={toggleDarkMode}
-            variant={"ghost"} 
-            className="px-1 sm:px-2 text-slate-400 hover:text-slate-500"
-          >
-            {
-              darkMode ? 
-              <Moon className="w-5 h-5" />
-              :
-              <Sun className="w-5 h-5" />
-            }
+      <div className="flex gap-x-3 items-center">
+        <Link href={"/accounts/signin"}>
+          <Button variant={"outline"} className="font-bold">
+            Log in
           </Button>
-        </div>
+        </Link>
+        <Link href={"/accounts/signup"}>
+          <Button className="font-bold">
+            Sign up
+          </Button>
+        </Link>
       </div>
-
     </header> 
   )
 }
@@ -111,19 +82,21 @@ function Hero() {
   return (
     <section className="grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 px-10 mb-0">
 
-      <div className="flex flex-col items-center justify-center text-center space-y-6 py-6 md:py-12 lg:py-32">
+      <div className="flex flex-col justify-center text-left space-y-6 py-6 md:py-12 lg:py-32">
         <h1 className="text-3xl leading-snug md:text-5xl md:leading-tight font-bold">
-          <span className="dark:text-primary">Everything you need to </span>
+          <span>Everything you need to </span>
           <br />
-          <span className=" relative whitespace-nowrap">
-            <span className="absolute bg-primary dark:bg-slate-900 opacity-80 -left-2 -top-1 -bottom-1 -right-2 md:-left-3 md:-top-0 md:-bottom-0 md:-right-3 -rotate-1"></span>
-            <span className="relative text-white">study with AI</span>
-          </span>
+          <SparklesText 
+            className="text-primary"
+            text="study with AI" 
+            sparklesCount={5}
+          />
+          <DoubleUnderline className="max-w-[300px]" />
         </h1>
-        <p className="mt-5 leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-          More than just a chatbot, take advantage of diverse study tools to learn, grow, and excel. 
+        <p className="mt-5 leading-normal sm:text-xl sm:leading-8">
+          More than just a chatbot, take advantage of diverse AI-powered study tools to crush your study goals.
         </p>
-        <div className="grid grid-cols-2 gap-x-3 items-center justify-center">
+        <div className="flex gap-10">
           <Link href={"/accounts/signup"}>
             <Button className="px-6 sm:px-12 h-12">
               <Rocket className="w-5 h-5 mr-2" />
@@ -158,52 +131,43 @@ function Hero() {
 function Features() {
   return (
     <section id="features" className="flex flex-col items-center justify-center max-w-5xl mx-auto pt-0 sm:pt-24 mb-20 px-5 sm:px-0">
-      <SectionHeading>Features</SectionHeading>
-      <SectionSubHeading>(Includes screenshots from the actual app!)</SectionSubHeading>
-      <div className="flex flex-col gap-6 mt-5 w-full">
+
+      <SectionHeading>Power-packed with <span className="text-primary">features</span></SectionHeading>
+      <SectionSubHeading>Make the most of your study sessions.</SectionSubHeading>
+
+      <div className="flex flex-col gap-16 mt-10 w-full">
         <FeatureItem 
-          imageSrc="/features-chat.png"
-          imageAlt="chat window"
+          imageSrc="/features-ai.gif"
+          imageAlt=""
         >
           <FeatureItemHeading>
-            Smart Tutor
+            AI assistance whenever you need it
           </FeatureItemHeading>
-          <FeatureItemSubHeading>
-            AI-driven chatbot that provides real-time answers and explanations.
-          </FeatureItemSubHeading>
+          <FeatureItemText>
+            Get explanations, answers to questions, and much more with our powerful AI tutor.
+          </FeatureItemText>
         </FeatureItem>
         <FeatureItem 
-          imageSrc="/features-context.png"
-          imageAlt="contextual queries"
+          imageSrc="/features-flashcards.gif"
+          imageAlt=""
         >
           <FeatureItemHeading>
-            Contextual Help
+            Intelligent flashcards that get you
           </FeatureItemHeading>
-          <FeatureItemSubHeading>
-            Offers suggestions and hints based on the current topic and user&apos;s progress.
-          </FeatureItemSubHeading>
+          <FeatureItemText>
+            Create flashcards at the click of a button. Flashcards can adjust to help you focus on your weaknesses.
+          </FeatureItemText>
         </FeatureItem>
         <FeatureItem 
-          imageSrc="/features-flashcard.png"
-          imageAlt="dynamic flashcards"
+          imageSrc="/features-feedback.gif"
+          imageAlt=""
         >
           <FeatureItemHeading>
-            Dynamic flashcards
+            Detailed progress reports
           </FeatureItemHeading>
-          <FeatureItemSubHeading>
-            Intelligent flashcards that adjust content based on user performance.
-          </FeatureItemSubHeading>
-        </FeatureItem>
-        <FeatureItem 
-          imageSrc="/features-evaluation.png"
-          imageAlt="tailor-made progress reports"
-        >
-          <FeatureItemHeading>
-            Progress Reports
-          </FeatureItemHeading>
-          <FeatureItemSubHeading>
-            Detailed analytics on study habits, progress, and areas for improvement. 
-          </FeatureItemSubHeading>
+          <FeatureItemText>
+            Get detailed feedback on your performance as well as suggested study areas.
+          </FeatureItemText>
         </FeatureItem>
       </div>
     </section>
@@ -221,13 +185,13 @@ function FeatureItem({
       <div className="relative min-h-64 sm:group-even:order-last">
         <Image 
           src={imageSrc}
-          width={400}
-          height={400}
+          width={600}
+          height={600}
           alt={imageAlt}
-          className="rounded-lg border shadow mx-auto"
+          className="rounded-2xl border-2 border-primary shadow mx-auto aspect-video object-cover"
         />
       </div>
-      <div className="p-2 sm:p-12 flex flex-col justify-center gap-3">
+      <div className="p-2 sm:py-12 group-odd:pl-12 group-even:pr-12 flex flex-col text-left justify-center gap-3">
         { children }
       </div>
     </div>
@@ -241,22 +205,36 @@ function FeatureItemHeading({
   children: React.ReactNode;
 }>) {
   return (
-    <h3 className="text-lg font-bold dark:text-primary">
+    <h3 className="text-2xl font-bold">
       { children }
     </h3>
   )
 }
 
 
-function FeatureItemSubHeading({
+function FeatureItemText({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <p className="text-muted-foreground">
+    <p className="text-lg">
       { children }
     </p>
+  )
+}
+
+
+function DoubleUnderline(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1283 132"
+      fill="#0D9488"
+      {...props}
+    >
+      <path d="M1282.46 5.79c-.91-3.88-5.18-6.65-9.04-5.54-104.37 29.02-193.78 56.87-361.6 74.53-268.41 28.16-539.6 14.6-803.08-26.38C94.9 47.97-.34 26.24.08 41.38c-1.56 14.21 19.47 12.91 29.6 17.24 32.82 8.6 66.1 15.33 99.4 21.81 238.99 44.43 482.98 55.29 725.63 49.01 92.37-4.11 185.68-9.96 275.51-33.09 18.68-6.31 42.79-9.21 55.18-25.89 6.76-13.28-12.41-21.16-13.83-6.12-17.69 11.67-39.31 15.61-59.45 21.34-114.56 25.18-245.31 30.46-361.99 30.36-191.39.45-383.13-10.13-572-42.21 277.31 36.42 560.77 44.96 837.82 2.23 104.21-15.4 195.11-42.74 260.97-61.22a7.57 7.57 0 005.54-9.05z" />
+    </svg>
   )
 }
 
@@ -264,30 +242,30 @@ function FeatureItemSubHeading({
 function FrequentlyAskedQuestions() {
   return (
     <section id="faq" className="px-7 pt-0 sm:pt-24 flex flex-col items-center justify-center mb-20">
-      <SectionHeading>Got questions?</SectionHeading>
+      <SectionHeading>Got <span className="text-primary">questions</span>?</SectionHeading>
       <SectionSubHeading>We&apos;ve got answers.</SectionSubHeading>
       <Accordion type="single" collapsible className="w-full max-w-3xl dark:text-primary text-left">
         <AccordionItem value="item-1">
           <AccordionTrigger className="text-left">Do I need to be a student to use Open Tutor?</AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="text-base">
             Nope. Anyone can use Open Tutor. All you need to do is be willing to learn. 
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionTrigger className="text-left">How much does it cost to sign up?</AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="text-base">
             Open Tutor is free! 
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
           <AccordionTrigger className="text-left">Is Open Tutor suitable for all subjects?</AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="text-base">
             Yes, Open Tutor supports a wide range of subjects including math, science, literature, history, and more. Our AI is designed to adapt to different types of content and learning styles.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-4">
           <AccordionTrigger className="text-left">I&apos;m a developer. Can I contribute?</AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="text-base">
             Yes please! We are currently open-source and accepting contributions. Please check out our Github.
           </AccordionContent>
         </AccordionItem>
@@ -297,22 +275,24 @@ function FrequentlyAskedQuestions() {
 }
 
 
-function FinalCTA() {
+function CTA() {
   return (
-    <section className="pt-0 sm:pt-24 mb-10 px-12 mx-auto max-w-2xl">
-      <SectionHeading>
-        Ready to try it out?
-      </SectionHeading>
-      <SectionSubHeading>
-        Sign up today and experience the power of our platform. Let&apos;s up your study game.
-      </SectionSubHeading>
-      <div className="text-center">
-        <Link href={"/accounts/signup"}>
-          <Button className="px-12 h-12">
-            <Rocket className="w-5 h-5 mr-2" />
-            Get started
-          </Button>
-        </Link>
+    <section className="pt-0 sm:pt-24 mb-10 px-12 mx-auto max-w-5xl">
+      <div className="bg-primary text-background p-12 md:p-16 rounded-3xl">
+        <SectionHeading>
+          Well, what are you waiting for?
+        </SectionHeading>
+        <SectionSubHeading>
+          Sign up today and let&apos;s up your study game.
+        </SectionSubHeading>
+        <div className="text-center">
+          <Link href={"/accounts/signup"}>
+            <Button className="bg-background hover:bg-accent text-primary px-12 h-12">
+              <Rocket className="w-5 h-5 mr-2" />
+              Get started
+            </Button>
+          </Link>
+        </div>
       </div>
     </section>
   )
@@ -325,7 +305,7 @@ function SectionHeading({
   children: React.ReactNode;
 }>) {
   return (
-    <h2 className="font-bold text-3xl md:text-5xl text-center mb-6 dark:text-primary">
+    <h2 className="font-bold text-2xl md:text-4xl text-center mb-6">
       { children }
     </h2>
   )
@@ -334,11 +314,13 @@ function SectionHeading({
 
 function SectionSubHeading({
   children,
+  className,
 }: Readonly<{
   children: React.ReactNode;
+  className?: string;
 }>) {
   return (
-    <h2 className="text-muted-foreground text-lg md:text-xl text-center mb-6">
+    <h2 className={clsx("text-lg md:text-xl text-center mb-6", className)}>
       { children }
     </h2>
   )
@@ -347,11 +329,11 @@ function SectionSubHeading({
 
 function Footer() {
   return (
-    <footer className="flex flex-col sm:flex-row items-center gap-x-1 gap-y-4 px-6 pt-5 pb-10 dark:bg-secondary dark:text-primary">
+    <footer className="flex flex-col sm:flex-row items-center gap-x-1 gap-y-4 px-6 pt-5 pb-10">
       <Icon width={25} height={25} /> 
       <div className="text-center sm:text-left">  
-        Built by <Link href={"https://www.ifeanyiobinelo.com/"} className="font-medium underline underline-offset-4">Ifeanyi</Link>.
-        The source code is available on <Link href={"https://github.com/kz4killua/open-tutor-frontend"} className="font-medium underline underline-offset-4">Github</Link>.
+        Made with ❤️ by <Link href={"https://www.ifeanyiobinelo.com/"} target="_blank" className="text-primary font-medium hover:underline underline-offset-4">Ifeanyi</Link>.
+        The source code is available on <Link href={"https://github.com/kz4killua/open-tutor-frontend"} target="_blank" className="text-primary font-medium hover:underline underline-offset-4">Github</Link>.
       </div>
     </footer>
   )

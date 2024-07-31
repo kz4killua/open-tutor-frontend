@@ -7,7 +7,6 @@ import * as RadixScrollArea from "@radix-ui/react-scroll-area"
 import { FormattedMarkdown } from './formatted-markdown'
 
 
-
 export function DocumentMessages({
   streaming, 
   setStreaming
@@ -32,8 +31,6 @@ export function DocumentMessages({
       ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }, [documentMessages])
-
-  // Get the ID of the last message.
 
   return (
     <RadixScrollArea.Root className='grow relative overflow-hidden'>
@@ -106,7 +103,7 @@ function DocumentMessageUserIcon() {
 
 function DocumentMessageAssistantIcon() {
   return (
-    <div className="p-2 rounded shadow bg-gray-800 text-white">
+    <div className="p-2 rounded shadow bg-primary text-white">
       <Monitor size={15} />
     </div>
   )

@@ -3,6 +3,7 @@ import { Icon } from "@/components/shared/icon"
 import React from "react";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
+import Link from "next/link";
 
 
 export interface HeaderBreadcrumbLink {
@@ -37,7 +38,7 @@ export function Header({
   return (
     <header 
       className={clsx(
-        `flex z-50 bg-white items-center sticky top-0 py-5 px-5 h-[${HeaderHeight}px] transition-shadow`,
+        `flex z-50 bg-background items-center sticky top-0 py-5 px-5 h-[${HeaderHeight}px] transition-shadow`,
         isScrolled && 'shadow',
         className
       )}
@@ -45,21 +46,21 @@ export function Header({
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">
+            <Link href="/" className="text-foreground">
               <div className="flex gap-x-1 items-center">
                 <Icon width={25} height={25} />
                 <span className="font-medium">Open Tutor</span>
               </div>
-            </BreadcrumbLink>
+            </Link>
           </BreadcrumbItem>
           { 
             links.map(link =>
               <React.Fragment key={link.href}>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={link.href}>
+                  <Link href={link.href} className="transition-colors hover:text-foreground">
                     { link.name }
-                  </BreadcrumbLink>
+                  </Link>
                 </BreadcrumbItem>
               </React.Fragment>
             )

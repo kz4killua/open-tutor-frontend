@@ -30,7 +30,6 @@
 
 .rendered-pdf-container-document .react-pdf__Page ::selection {
   color: transparent; 
-  background: rgba(176, 216, 230, 0.5); 
   white-space: pre; 
   /* This helps fix the issue with base layer text. */
 }

@@ -42,8 +42,8 @@ export default function DocumentsPage() {
           <h1 className="text-2xl font-semibold leading-none tracking-tight mb-1">
             Your Documents
           </h1>
-          <p className="text-sm text-muted-foreground italic">
-            &ldquo;Everything around you that you call life was made up by people who were no smarter than you. &rdquo;
+          <p className="text-sm text-muted-foreground">
+            &ldquo;Everything around you that you call life was made up by people who were no smarter than you. &rdquo; &nbsp; &mdash; Steve Jobs
           </p>
         </div>
         <div className="flex justify-end">

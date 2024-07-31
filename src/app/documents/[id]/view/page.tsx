@@ -9,7 +9,7 @@ import { useDocuments } from "@/app/providers"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { BookOpenText, GraduationCap, MessageCircleQuestion } from "lucide-react"
+import { BookOpenText, GraduationCap, MessageCircleQuestion, Sparkle } from "lucide-react"
 import { toast } from "sonner"
 import StyledTooltip from "@/components/shared/styled-tooltip"
 import { DocumentMessages } from "@/components/documents/document-messages"
@@ -94,7 +94,7 @@ function SidePanel({
 
   const [streaming, setStreaming] = useState(false)
 
-  // Disable Microsoft Edge's text selection popup.
+  // Disable Microsoft Edge's default text selection popup.
   // https://learn.microsoft.com/en-us/answers/questions/1508004/on-microsoft-edge-as-a-developer-who-runs-a-websit
   useEffect(() => {
     window.onmouseup = event => event.preventDefault();
@@ -104,7 +104,7 @@ function SidePanel({
     <Sheet open={sidePanelOpen} onOpenChange={(value) => setSidePanelOpen(value)} modal={false}>
       <StyledTooltip text="Ask AI">
         <SheetTrigger asChild>
-          <Button variant="outline" className="fixed bottom-5 right-5 z-50 rounded-full h-auto p-3 shadow-md">
+          <Button variant="outline" className="fixed bg-background bottom-5 right-5 z-50 rounded-full h-auto p-3 shadow-md">
             <MessageCircleQuestion />
           </Button>
         </SheetTrigger>
@@ -112,7 +112,9 @@ function SidePanel({
       <SheetContent className="flex flex-col gap-y-0 w-full max-w-full sm:w-[500px] sm:max-w-[500px] p-0">
         <div className="p-6">
           <SheetHeader>
-            <SheetTitle>Chat with an AI.</SheetTitle>
+            <SheetTitle className="flex gap-x-1 items-center">
+              Chat with AI <Sparkle height={24} className="fill-primary stroke-0" />
+            </SheetTitle>
           </SheetHeader>
         </div>
         <DocumentMessages 

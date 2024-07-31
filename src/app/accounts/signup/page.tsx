@@ -36,7 +36,7 @@ export default function SignUpPage() {
         </CardContent>
         <CardFooter>
           <p className="text-sm">
-            Already have an account? <Link href={"/accounts/signin"} className="font-medium underline-offset-4 hover:underline">Sign in</Link>.
+            Already have an account? <Link href={"/accounts/signin"} className="font-medium text-primary underline-offset-4 hover:underline">Sign in</Link>.
           </p>
         </CardFooter>
       </Card>

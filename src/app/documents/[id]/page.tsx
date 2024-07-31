@@ -42,7 +42,7 @@ export default function DocumentPage({
     <div>
       <Header links={headerlinks} />
       {document && 
-        <main className="flex flex-col max-w-2xl mx-auto p-6 space-y-6">
+        <main className="flex flex-col max-w-2xl mx-auto mt-5 p-6 space-y-6">
           <div>
             <h1 className="text-2xl text-center font-bold">
               {document.name}
@@ -142,7 +142,7 @@ function DocumentDeletionButtonAndDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <Button variant={"default"} onClick={handleDeletion}>
+          <Button variant={"destructive"} onClick={handleDeletion}>
             Yes, I&apos;m sure.
           </Button>
           <DialogClose asChild>
