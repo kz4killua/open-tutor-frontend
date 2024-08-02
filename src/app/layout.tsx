@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={clsx(
         inter.className, 
-        "selection:bg-primary/20 selection:text-foreground"
+        "selection:bg-primary/20"
       )}>
         <Providers>
           <Toaster richColors />
