@@ -80,7 +80,7 @@ export default function DocumentPage({
                 </div>
               </div>
             </div>
-            <div className="flex flex-row md:flex-col gap-3 divide-y">
+            <div className="flex flex-row justify-center md:justify-start md:flex-col gap-3 divide-y">
               <Link href={document.file} target="_blank">
                 <Button variant={"outline"} className="w-32">
                   <Download size={16} className="me-2" />
