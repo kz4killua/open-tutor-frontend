@@ -4,15 +4,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
 import Link from "next/link";
+import Container from "./container";
 
 
 export interface HeaderBreadcrumbLink {
   name: string;
   href: string;
 }
-
-
-export const HeaderHeight = 65
 
 
 export function Header({ 
@@ -24,7 +22,6 @@ export function Header({
 
   const [isScrolled, setIsScrolled] = useState(false)
 
-  // Add a shadow when the user scrolls
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40)
@@ -38,35 +35,37 @@ export function Header({
   return (
     <header 
       className={clsx(
-        `flex z-50 bg-background items-center sticky top-0 py-5 px-5 h-[${HeaderHeight}px] transition-shadow`,
+        `z-50 bg-background sticky top-0 transition-shadow`,
         isScrolled && 'shadow',
         className
       )}
     >
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <Link href="/" className="text-foreground">
-              <div className="flex gap-x-1 items-center">
-                <Icon width={25} height={25} />
-                <span className="font-medium">Open Tutor</span>
-              </div>
-            </Link>
-          </BreadcrumbItem>
-          { 
-            links.map(link =>
-              <React.Fragment key={link.href}>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <Link href={link.href} className="transition-colors hover:text-foreground">
-                    { link.name }
-                  </Link>
-                </BreadcrumbItem>
-              </React.Fragment>
-            )
-          }
-        </BreadcrumbList>
-      </Breadcrumb>
+      <Container className="flex h-20 items-center">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Link href="/" className="text-foreground">
+                <div className="flex gap-x-1 items-center">
+                  <Icon width={25} height={25} />
+                  <span className="font-medium">Open Tutor</span>
+                </div>
+              </Link>
+            </BreadcrumbItem>
+            { 
+              links.map(link =>
+                <React.Fragment key={link.href}>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <Link href={link.href} className="transition-colors hover:text-foreground">
+                      { link.name }
+                    </Link>
+                  </BreadcrumbItem>
+                </React.Fragment>
+              )
+            }
+          </BreadcrumbList>
+        </Breadcrumb>
+      </Container>
     </header>
   )
 }
