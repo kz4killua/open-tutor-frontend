@@ -15,30 +15,33 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Loader } from "lucide-react"
 import { Suspense } from 'react'
+import Container from "@/components/shared/container"
 
 
 export default function SignInPage() {
 
   return (
-    <main className="h-dvh flex items-center justify-center p-3">
-      <Card className="w-[600px]">
-        <CardHeader>
-          <CardTitle>Welcome back</CardTitle>
-          <CardDescription>
-            Enter your email and password to sign in
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Suspense>
-            <SignInForm />
-          </Suspense>
-        </CardContent>
-        <CardFooter>
-          <p className="text-sm">
-            Don&apos;t have an account? <Link href={"/accounts/signup"} className="font-medium text-primary underline-offset-4 hover:underline">Sign up</Link> instead. 
-          </p>
-        </CardFooter>
-      </Card>
+    <main>
+      <Container className="h-dvh flex items-center justify-center p-3">
+        <Card className="w-[600px]">
+          <CardHeader>
+            <CardTitle>Welcome back</CardTitle>
+            <CardDescription>
+              Enter your email and password to sign in
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Suspense>
+              <SignInForm />
+            </Suspense>
+          </CardContent>
+          <CardFooter>
+            <p className="text-sm">
+              Don&apos;t have an account? <Link href={"/accounts/signup"} className="font-medium text-primary underline-offset-4 hover:underline">Sign up</Link> instead. 
+            </p>
+          </CardFooter>
+        </Card>
+      </Container>
     </main>
   )
 }

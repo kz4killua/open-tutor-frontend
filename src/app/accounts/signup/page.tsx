@@ -16,30 +16,33 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { Suspense } from 'react'
+import Container from "@/components/shared/container"
 
 
 export default function SignUpPage() {
 
   return (
-    <main className="h-dvh flex items-center justify-center p-3">
-      <Card className="w-[600px]">
-        <CardHeader>
-          <CardTitle>Let&apos;s get started</CardTitle>
-          <CardDescription>
-            Create your account with an email and a password
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Suspense>
-            <SignUpForm />
-          </Suspense>
-        </CardContent>
-        <CardFooter>
-          <p className="text-sm">
-            Already have an account? <Link href={"/accounts/signin"} className="font-medium text-primary underline-offset-4 hover:underline">Sign in</Link>.
-          </p>
-        </CardFooter>
-      </Card>
+    <main>
+      <Container className="h-dvh flex items-center justify-center p-3">
+        <Card className="w-[600px]">
+          <CardHeader>
+            <CardTitle>Let&apos;s get started</CardTitle>
+            <CardDescription>
+              Create your account with an email and a password
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Suspense>
+              <SignUpForm />
+            </Suspense>
+          </CardContent>
+          <CardFooter>
+            <p className="text-sm">
+              Already have an account? <Link href={"/accounts/signin"} className="font-medium text-primary underline-offset-4 hover:underline">Sign in</Link>.
+            </p>
+          </CardFooter>
+        </Card>
+      </Container>
     </main>
   )
 }
