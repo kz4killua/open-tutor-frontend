@@ -10,15 +10,16 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import SparklesText from "@/components/magicui/sparkles-text";
 import clsx from "clsx";
 import Container from "@/components/shared/container";
+import DarkModeSwitch from "@/components/shared/dark-mode-switch";
 
 
 export default function Home() {
 
 
   return (
-    <div className="transition-colors duration-700">
+    <div className="transition-colors duration-300">
       <Header />
-      <main className="pb-20 dark:bg-secondary">
+      <main className="pb-20 bg-background">
         <Hero />
         <Features />
         <FrequentlyAskedQuestions />
@@ -72,6 +73,7 @@ function Header() {
               Sign up
             </Button>
           </Link>
+          <DarkModeSwitch />
         </div>
       </Container>
     </header> 
@@ -248,7 +250,7 @@ function FrequentlyAskedQuestions() {
     <section id="faq" className="px-7 pt-0 sm:pt-24 flex flex-col items-center justify-center mb-20">
       <SectionHeading>Got <span className="text-primary">questions</span>?</SectionHeading>
       <SectionSubHeading>We&apos;ve got answers.</SectionSubHeading>
-      <Accordion type="single" collapsible className="w-full max-w-3xl dark:text-primary text-left">
+      <Accordion type="single" collapsible className="w-full max-w-3xl text-left">
         <AccordionItem value="item-1">
           <AccordionTrigger className="text-left">Do I need to be a student to use Open Tutor?</AccordionTrigger>
           <AccordionContent className="text-base">
@@ -283,7 +285,7 @@ function CTA() {
   return (
     <section className="pt-0 sm:pt-24 mb-10">
       <Container>
-        <div className="bg-primary text-background rounded-3xl p-12 md:p-16 md:py-20">
+        <div className="bg-primary text-primary-foreground rounded-3xl p-12 md:p-16 md:py-20">
           <SectionHeading>
             Well, what are you waiting for?
           </SectionHeading>
@@ -292,7 +294,7 @@ function CTA() {
           </SectionSubHeading>
           <div className="text-center">
             <Link href={"/accounts/signup"}>
-              <Button className="bg-background hover:bg-accent text-primary px-12 h-12">
+              <Button className="bg-background dark:bg-foreground hover:brightness-90 text-primary px-12 h-12">
                 <Rocket className="w-5 h-5 mr-2" />
                 Get started
               </Button>

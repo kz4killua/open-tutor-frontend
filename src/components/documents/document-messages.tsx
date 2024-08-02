@@ -71,7 +71,7 @@ function DocumentMessage({
       <div className="w-full overflow-x-auto">
         { message.role === 'user' && message.quote &&
           <div className="mb-1">
-            <span className="text-sm text-slate-500">
+            <span className="text-sm">
               &ldquo;{message.quote}&rdquo;
             </span>
           </div>

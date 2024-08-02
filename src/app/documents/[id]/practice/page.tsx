@@ -353,7 +353,7 @@ function LoadingSuspense({
           <Lottie 
             animationData={seeSawAnimation} 
           />
-          <div className="font-semibold sm:text-lg text-gray-700">
+          <div className="font-semibold sm:text-lg">
             Hang on. We&apos;re preparing a quiz for you.
           </div>
         </div>

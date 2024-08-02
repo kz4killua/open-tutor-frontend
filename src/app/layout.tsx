@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
+import DarkModeSwitch from "@/components/shared/dark-mode-switch";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(inter.className, "selection:bg-primary/20 selection:text-foreground")}>
+      <body className={clsx(
+        inter.className, 
+        "selection:bg-primary/20 selection:text-foreground"
+      )}>
         <Providers>
           <Toaster richColors />
           {children}

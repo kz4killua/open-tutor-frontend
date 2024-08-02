@@ -61,21 +61,21 @@ export default function DocumentPage({
             </Link>
           </div>
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="grow bg-gray-100 rounded-lg p-4">
+            <div className="grow bg-secondary rounded-lg p-4">
               <h1 className="font-medium mb-4">
                 Document Details
               </h1>
               <div className="flex flex-col gap-y-2 text-sm">
                 <div>
-                  <h3 className="text-gray-500">Title</h3>
+                  <h3 className="font-medium">Title</h3>
                   <div>{document.name}</div>
                 </div>
                 <div>
-                  <h3 className="text-gray-500">Created</h3>
+                  <h3 className="font-medium">Created</h3>
                   <div>{formatDate(document.created)}</div>
                 </div>
                 <div>
-                  <h3 className="text-gray-500">File Size</h3>
+                  <h3 className="font-medium">File Size</h3>
                   <div>{formatFileSize(document.size)}</div>
                 </div>
               </div>

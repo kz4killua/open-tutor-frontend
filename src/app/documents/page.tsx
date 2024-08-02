@@ -207,7 +207,7 @@ function DocumentAddForm({
             <FormItem>
               <FormLabel>File</FormLabel>
               <FormControl>
-                <Input type="file" accept=".pdf" {...form.register("file", { required: true })} />
+                <Input type="file" className="dark:file:text-muted-foreground" accept=".pdf" {...form.register("file", { required: true })} />
               </FormControl>
               <FormDescription>
                 Upload a valid PDF file. Uploads must be less than 20MB.

@@ -19,12 +19,12 @@ export default function Toolbar() {
     <div className="fixed z-50 bottom-5 left-0 right-0 w-fit mx-auto flex items-center justify-center">
       <div className="flex bg-background border shadow-lg rounded-lg overflow-hidden">
         <StyledTooltip text="Zoom in">
-          <button className="cursor-pointer p-4 hover:bg-gray-50 active:bg-gray-200 border-r" onClick={handleZoomIn}>
+          <button className="cursor-pointer p-4 bg-background hover:bg-accent border-r" onClick={handleZoomIn}>
             <ZoomIn size={20} />
           </button>
         </StyledTooltip>
         <StyledTooltip text="Zoom out">
-          <button className="cursor-pointer p-4 hover:bg-gray-50 active:bg-gray-200" onClick={handleZoomOut}>
+          <button className="cursor-pointer p-4 bg-background hover:bg-accent" onClick={handleZoomOut}>
             <ZoomOut size={20} />
           </button>
         </StyledTooltip>

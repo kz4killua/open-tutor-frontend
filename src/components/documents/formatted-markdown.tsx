@@ -12,7 +12,7 @@ export function FormattedMarkdown({
   children: string
 }) {
   return (
-    <Markdown className={"prose"} remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>
+    <Markdown className={"prose dark:prose-invert"} remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>
       {children}
     </Markdown>
   )

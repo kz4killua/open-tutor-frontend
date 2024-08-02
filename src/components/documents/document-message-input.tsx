@@ -194,12 +194,12 @@ function DocumentMessageInputQuote({
   return (
     <>
       { userInput.quote.length !== 0 &&    
-        <div className="flex items-start gap-x-2 bg-gray-100 px-2 py-3 rounded-md">
-          <span className="text-sm text-slate-500">
+        <div className="flex items-start gap-x-2 bg-secondary px-2 py-3 rounded-md">
+          <span className="text-sm">
             &ldquo;{userInput.quote}&rdquo;
           </span>
           <button onClick={handleQuoteCancel}>
-            <X size={16} className="text-slate-500" />
+            <X size={16} />
           </button>
         </div>
       }

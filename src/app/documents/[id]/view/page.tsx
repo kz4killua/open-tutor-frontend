@@ -55,7 +55,7 @@ export default function DocumentViewPage({
     <div className="flex flex-col">
       <Header links={headerlinks} className="shadow" />
       { document &&
-        <div className="bg-gray-50">
+        <div className="bg-secondary">
           <main>
             <ActionsMenu 
               selection={selection}  

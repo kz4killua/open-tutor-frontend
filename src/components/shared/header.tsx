@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import Container from "./container";
+import DarkModeSwitch from "./dark-mode-switch";
 
 
 export interface HeaderBreadcrumbLink {
@@ -40,7 +41,7 @@ export function Header({
         className
       )}
     >
-      <Container className="flex h-20 items-center">
+      <Container className="flex h-20 items-center justify-between">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -65,6 +66,7 @@ export function Header({
             }
           </BreadcrumbList>
         </Breadcrumb>
+        <DarkModeSwitch />
       </Container>
     </header>
   )
