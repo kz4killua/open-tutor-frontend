@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import SparklesText from "@/components/magicui/sparkles-text";
 import clsx from "clsx";
+import Container from "@/components/shared/container";
 
 
 export default function Home() {
@@ -33,7 +34,6 @@ function Header() {
 
   const [isScrolled, setIsScrolled] = useState(false)
 
-  // Add a shadow when the user scrolls down
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40)
@@ -46,33 +46,34 @@ function Header() {
 
 
   return (
-    <header className={`h-20 z-50 bg-background flex justify-between items-center py-3 px-6 sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
+    <header className={`z-50 bg-background sticky top-0 transition-shadow ${isScrolled ? 'shadow' : ''}`}>
+      <Container className="h-20 py-3 flex justify-between items-center">
+        <div className="flex items-center gap-x-10">
+          <Link href={"/"}>
+            <div className="flex gap-x-1 items-center">
+              <Icon width={30} height={30} />
+              <span className="font-bold">Open Tutor</span>
+            </div>
+          </Link>
+          <nav className="grow hidden sm:flex justify-center gap-x-7">
+            <Link href={"/#features"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">Features</Link>
+            <Link href={"/#faq"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">FAQ</Link>
+          </nav>
+        </div>
 
-      <div className="flex items-center gap-x-10">
-        <Link href={"/"}>
-          <div className="flex gap-x-1 items-center">
-            <Icon width={30} height={30} />
-            <span className="font-bold">Open Tutor</span>
-          </div>
-        </Link>
-        <nav className="grow hidden sm:flex justify-center gap-x-7">
-          <Link href={"/#features"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">Features</Link>
-          <Link href={"/#faq"} className="font-medium cursor-pointer text-foreground/60 hover:text-foreground/80 transition-colors">FAQ</Link>
-        </nav>
-      </div>
-
-      <div className="flex gap-x-3 items-center">
-        <Link href={"/accounts/signin"}>
-          <Button variant={"outline"} className="font-bold">
-            Log in
-          </Button>
-        </Link>
-        <Link href={"/accounts/signup"}>
-          <Button className="font-bold">
-            Sign up
-          </Button>
-        </Link>
-      </div>
+        <div className="flex gap-x-3 items-center">
+          <Link href={"/accounts/signin"}>
+            <Button variant={"outline"} className="font-bold">
+              Log in
+            </Button>
+          </Link>
+          <Link href={"/accounts/signup"}>
+            <Button className="font-bold">
+              Sign up
+            </Button>
+          </Link>
+        </div>
+      </Container>
     </header> 
   )
 }
@@ -80,49 +81,50 @@ function Header() {
 
 function Hero() {
   return (
-    <section className="grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 px-10 mb-0">
+    <section>
+      <Container className="grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1">
 
-      <div className="flex flex-col justify-center text-left space-y-6 py-6 md:py-12 lg:py-32">
-        <h1 className="text-3xl leading-snug md:text-5xl md:leading-tight font-bold">
-          <span>Everything you need to </span>
-          <br />
-          <SparklesText 
-            className="text-primary"
-            text="study with AI" 
-            sparklesCount={5}
-          />
-          <DoubleUnderline className="max-w-[300px]" />
-        </h1>
-        <p className="mt-5 leading-normal sm:text-xl sm:leading-8">
-          More than just a chatbot, take advantage of diverse AI-powered study tools to crush your study goals.
-        </p>
-        <div className="flex gap-10">
-          <Link href={"/accounts/signup"}>
-            <Button className="px-6 sm:px-12 h-12">
-              <Rocket className="w-5 h-5 mr-2" />
-              Get started
-            </Button>
-          </Link>
-          <Link href={"https://github.com/kz4killua/open-tutor-frontend"}>
-            <Button className="px-6 sm:px-12 h-12" variant={"secondary"}>
-              <svg viewBox="0 0 16 16" className="w-5 h-5 mr-2" fill="currentColor" aria-hidden="true">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-              </svg>
-              View Github
-            </Button>
-          </Link>
+        <div className="flex flex-col justify-center items-center sm:items-start text-center sm:text-left space-y-6 py-6 md:py-12 lg:py-32">
+          <h1 className="text-3xl leading-snug md:text-5xl md:leading-tight font-bold">
+            <span>Everything you need to </span>
+            <br />
+            <SparklesText 
+              className="text-primary"
+              text="study with AI" 
+              sparklesCount={5}
+            />
+            <DoubleUnderline className="mx-auto sm:mx-0 max-w-[200px] sm:max-w-[300px]" />
+          </h1>
+          <p className="mt-5 leading-normal sm:text-xl sm:leading-8">
+            More than just a chatbot, take advantage of diverse AI-powered study tools to crush your study goals.
+          </p>
+          <div className="flex gap-5 sm:gap-10">
+            <Link href={"/accounts/signup"}>
+              <Button className="px-3 sm:px-6 md:px-12 h-12">
+                <Rocket className="w-5 h-5 mr-2" />
+                Get started
+              </Button>
+            </Link>
+            <Link href={"https://github.com/kz4killua/open-tutor-frontend"}>
+              <Button className="px-3 sm:px-6 md:px-12 h-12" variant={"secondary"}>
+                <svg viewBox="0 0 16 16" className="w-5 h-5 mr-2" fill="currentColor" aria-hidden="true">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                View Github
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
 
-      <div className="relative min-h-40">
-        <Image 
-          src={"/hero-image.svg"} 
-          alt="Studying with AI"
-          className="px-10"
-          fill
-        />
-      </div>
-
+        <div className="relative min-h-40">
+          <Image 
+            src={"/hero-image.svg"} 
+            alt="Studying with AI"
+            className="px-10"
+            fill
+          />
+        </div>
+      </Container>
     </section>
   )
 }
@@ -130,46 +132,47 @@ function Hero() {
 
 function Features() {
   return (
-    <section id="features" className="flex flex-col items-center justify-center max-w-5xl mx-auto pt-0 sm:pt-24 mb-20 px-5 sm:px-0">
+    <section id="features">
+      <Container className="flex flex-col items-center justify-center pt-0 sm:pt-24 mb-20">
+        <SectionHeading>Power-packed with <span className="text-primary">features</span></SectionHeading>
+        <SectionSubHeading>Make the most of your study sessions.</SectionSubHeading>
 
-      <SectionHeading>Power-packed with <span className="text-primary">features</span></SectionHeading>
-      <SectionSubHeading>Make the most of your study sessions.</SectionSubHeading>
-
-      <div className="flex flex-col gap-16 mt-10 w-full">
-        <FeatureItem 
-          imageSrc="/features-ai.gif"
-          imageAlt=""
-        >
-          <FeatureItemHeading>
-            AI assistance whenever you need it
-          </FeatureItemHeading>
-          <FeatureItemText>
-            Get explanations, answers to questions, and much more with our powerful AI tutor.
-          </FeatureItemText>
-        </FeatureItem>
-        <FeatureItem 
-          imageSrc="/features-flashcards.gif"
-          imageAlt=""
-        >
-          <FeatureItemHeading>
-            Intelligent flashcards that get you
-          </FeatureItemHeading>
-          <FeatureItemText>
-            Create flashcards at the click of a button. Flashcards can adjust to help you focus on your weaknesses.
-          </FeatureItemText>
-        </FeatureItem>
-        <FeatureItem 
-          imageSrc="/features-feedback.gif"
-          imageAlt=""
-        >
-          <FeatureItemHeading>
-            Detailed progress reports
-          </FeatureItemHeading>
-          <FeatureItemText>
-            Get detailed feedback on your performance as well as suggested study areas.
-          </FeatureItemText>
-        </FeatureItem>
-      </div>
+        <div className="flex flex-col gap-16 mt-10">
+          <FeatureItem 
+            imageSrc="/features-ai.gif"
+            imageAlt=""
+          >
+            <FeatureItemHeading>
+              AI assistance whenever you need it
+            </FeatureItemHeading>
+            <FeatureItemText>
+              Get explanations, answers to questions, and much more with our powerful AI tutor.
+            </FeatureItemText>
+          </FeatureItem>
+          <FeatureItem 
+            imageSrc="/features-flashcards.gif"
+            imageAlt=""
+          >
+            <FeatureItemHeading>
+              Intelligent flashcards that get you
+            </FeatureItemHeading>
+            <FeatureItemText>
+              Create flashcards at the click of a button. Flashcards can adjust to help you focus on your weaknesses.
+            </FeatureItemText>
+          </FeatureItem>
+          <FeatureItem 
+            imageSrc="/features-feedback.gif"
+            imageAlt=""
+          >
+            <FeatureItemHeading>
+              Detailed progress reports
+            </FeatureItemHeading>
+            <FeatureItemText>
+              Get detailed feedback on your performance as well as suggested study areas.
+            </FeatureItemText>
+          </FeatureItem>
+        </div>
+      </Container>
     </section>
   )
 }
@@ -181,17 +184,18 @@ function FeatureItem({
   imageSrc: string, imageAlt: string, children: React.ReactNode
 }) {
   return (
-    <div className="group w-full grid sm:grid-cols-2 gap-x-4 gap-y-12 justify-center px-10">
-      <div className="relative min-h-64 sm:group-even:order-last">
+    <div className="group w-full grid sm:grid-cols-2 gap-x-4 gap-y-12 justify-center">
+      <div className="relative flex items-center min-h-64 sm:group-even:order-last">
         <Image 
+          unoptimized
           src={imageSrc}
-          width={600}
-          height={600}
+          width={1200}
+          height={1200}
           alt={imageAlt}
           className="rounded-2xl border-2 border-primary shadow mx-auto aspect-video object-cover"
         />
       </div>
-      <div className="p-2 sm:py-12 group-odd:pl-12 group-even:pr-12 flex flex-col text-left justify-center gap-3">
+      <div className="sm:py-12 sm:group-odd:pl-12 group-even:pr-12 flex flex-col text-left justify-center gap-3">
         { children }
       </div>
     </div>
@@ -277,23 +281,25 @@ function FrequentlyAskedQuestions() {
 
 function CTA() {
   return (
-    <section className="pt-0 sm:pt-24 mb-10 px-12 mx-auto max-w-5xl">
-      <div className="bg-primary text-background p-12 md:p-16 rounded-3xl">
-        <SectionHeading>
-          Well, what are you waiting for?
-        </SectionHeading>
-        <SectionSubHeading>
-          Sign up today and let&apos;s up your study game.
-        </SectionSubHeading>
-        <div className="text-center">
-          <Link href={"/accounts/signup"}>
-            <Button className="bg-background hover:bg-accent text-primary px-12 h-12">
-              <Rocket className="w-5 h-5 mr-2" />
-              Get started
-            </Button>
-          </Link>
+    <section className="pt-0 sm:pt-24 mb-10">
+      <Container>
+        <div className="bg-primary text-background rounded-3xl p-12 md:p-16 md:py-20">
+          <SectionHeading>
+            Well, what are you waiting for?
+          </SectionHeading>
+          <SectionSubHeading>
+            Sign up today and let&apos;s up your study game.
+          </SectionSubHeading>
+          <div className="text-center">
+            <Link href={"/accounts/signup"}>
+              <Button className="bg-background hover:bg-accent text-primary px-12 h-12">
+                <Rocket className="w-5 h-5 mr-2" />
+                Get started
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }
@@ -329,12 +335,14 @@ function SectionSubHeading({
 
 function Footer() {
   return (
-    <footer className="flex flex-col sm:flex-row items-center gap-x-1 gap-y-4 px-6 pt-5 pb-10">
-      <Icon width={25} height={25} /> 
-      <div className="text-center sm:text-left">  
-        Made with ❤️ by <Link href={"https://www.ifeanyiobinelo.com/"} target="_blank" className="text-primary font-medium hover:underline underline-offset-4">Ifeanyi</Link>.
-        The source code is available on <Link href={"https://github.com/kz4killua/open-tutor-frontend"} target="_blank" className="text-primary font-medium hover:underline underline-offset-4">Github</Link>.
-      </div>
+    <footer>
+      <Container className="flex flex-col sm:flex-row items-center gap-x-1 gap-y-4 pt-5 pb-10">
+        <Icon width={25} height={25} /> 
+        <div className="text-center sm:text-left">  
+          Made with ❤️ by <Link href={"https://www.ifeanyiobinelo.com/"} target="_blank" className="text-primary font-medium hover:underline underline-offset-4">Ifeanyi</Link>.
+          The source code is available on <Link href={"https://github.com/kz4killua/open-tutor-frontend"} target="_blank" className="text-primary font-medium hover:underline underline-offset-4">Github</Link>.
+        </div>
+      </Container>
     </footer>
   )
 }
