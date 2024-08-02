@@ -294,7 +294,7 @@ function CTA() {
           </SectionSubHeading>
           <div className="text-center">
             <Link href={"/accounts/signup"}>
-              <Button className="bg-background dark:bg-foreground hover:brightness-90 text-primary px-12 h-12">
+              <Button className="bg-background dark:bg-foreground hover:bg-background/90 dark:hover:bg-foreground/90 text-primary px-12 h-12">
                 <Rocket className="w-5 h-5 mr-2" />
                 Get started
               </Button>
