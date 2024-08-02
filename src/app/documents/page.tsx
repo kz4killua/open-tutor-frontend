@@ -19,6 +19,7 @@ import { createDocument, getDocumentsList } from "@/services/documents"
 import { formatDate } from "@/utilities/dates"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation";
+import Container from "@/components/shared/container";
 
 
 export default function DocumentsPage() {
@@ -37,23 +38,25 @@ export default function DocumentsPage() {
       <Header 
         links={headerlinks} 
       />
-      <main className="py-5 px-10">
-        <div className="flex flex-col space-y-1.5 mt-4 mb-8">
-          <h1 className="text-2xl font-semibold leading-none tracking-tight mb-1">
-            Your Documents
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            &ldquo;Everything around you that you call life was made up by people who were no smarter than you. &rdquo; &nbsp; &mdash; Steve Jobs
-          </p>
-        </div>
-        <div className="flex justify-end">
-          <DocumentAddButton />
-        </div>
-        {
-          documents.length === 0 ?
-          <BlankSlate /> : 
-          <DocumentsList />
-        }
+      <main>
+        <Container className="py-5">
+          <div className="flex flex-col space-y-1.5 mt-4 mb-8">
+            <h1 className="text-2xl font-semibold leading-none tracking-tight mb-1">
+              Your Documents
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              &ldquo;Everything around you that you call life was made up by people who were no smarter than you. &rdquo; &nbsp; &mdash; Steve Jobs
+            </p>
+          </div>
+          <div className="flex justify-end">
+            <DocumentAddButton />
+          </div>
+          {
+            documents.length === 0 ?
+            <BlankSlate /> : 
+            <DocumentsList />
+          }
+        </Container>
       </main>
     </div>
   )
