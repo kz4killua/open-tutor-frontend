@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
-import DarkModeSwitch from "@/components/shared/dark-mode-switch";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // "suppressHydrationWarning" for next-themes
+    <html lang="en" suppressHydrationWarning>
       <body className={clsx(
         inter.className, 
         "selection:bg-primary/20"

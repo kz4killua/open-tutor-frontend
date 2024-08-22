@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { useDarkMode } from '@/app/providers';
+import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from 'lucide-react';
 
 
@@ -9,11 +9,16 @@ export default function DarkModeSwitch({
 }: {
   className?: string;
 }) {
-  const { darkMode, setDarkMode } = useDarkMode();
+
+  const { theme, setTheme } = useTheme();
+
+  function toggleTheme() {
+    setTheme(theme === "dark" ? "light" : "dark");
+  }
 
   return (
     <button
-      onClick={() => setDarkMode(!darkMode)}
+      onClick={toggleTheme}
       className={
         clsx(
           "z-50 p-3 rounded-full duration-300 ease-in-out",
@@ -22,11 +27,8 @@ export default function DarkModeSwitch({
       }
       aria-label="Toggle dark mode"
     >
-      {darkMode ? (
-        <MoonIcon className="h-6 w-6 text-primary" />
-      ) : (
-        <SunIcon className="h-6 w-6 text-primary" />
-      )}
+      <MoonIcon className="hidden dark:block size-6 text-primary" />
+      <SunIcon className="block dark:hidden size-6 text-primary" />
     </button>
   );
 }
