@@ -24,7 +24,7 @@ export function DocumentMessageInput({
   setStreaming: (value: boolean) => void
 }) {
 
-  const { documentMessages, documentMessagesDispatch } = useDocumentMessages()
+  const { documentMessagesDispatch } = useDocumentMessages()
   const ref = useRef<HTMLTextAreaElement>(null)
 
 
@@ -146,12 +146,11 @@ export function DocumentMessageInput({
     setUserInput({
       ...userInput, query: e.target.value
     })
-    adjustTextAreaHeight()
   }
 
   useEffect(() => {
     adjustTextAreaHeight();
-  }, []);
+  }, [userInput.query]);
 
 
   return (
