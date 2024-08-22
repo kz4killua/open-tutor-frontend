@@ -10,7 +10,7 @@ import { ActionsMenu } from "@/components/documents/actions-menu"
 import { SidePanel } from "@/components/documents/side-panel"
 
 
-export default function DocumentViewPage({ 
+export default function DocumentReadPage({ 
   params 
 } : {
   params : { id: string }
@@ -43,7 +43,7 @@ export default function DocumentViewPage({
       href: `/documents/${params.id}`
     })
     headerlinks.push({
-      name: "View",
+      name: "Read",
       href: window.location.href
     })
   }

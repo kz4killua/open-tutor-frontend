@@ -49,7 +49,7 @@ export default function DocumentPage({
             </h1>
           </div>
           <div className="flex items-center justify-center gap-x-5">
-            <Link href={`/documents/${params.id}/view`}>
+            <Link href={`/documents/${params.id}/read`}>
               <Button variant={"default"} className="w-32 py-6">
                 <BookOpen size={16} className="shrink-0 mr-2" /> Read
               </Button>
