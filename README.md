@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ✨ Open Tutor: Everything you need to study with AI
+Open Tutor aims to be a one-stop shop for AI-powered study tools. This was originally a [hackathon](https://devpost.com/software/open-tutor-vg7s0u) project, but I have decided to take this a bit further. The goal is to make something I would actually use, and not just a gimmick. 
 
-## Getting Started
+> [!NOTE]
+> This repository contains code for the **frontend** of the Open Tutor application. You can check out the backend [here](https://github.com/kz4killua/open-tutor-backend).
 
-First, run the development server:
+## What can it do? 
+A lot! Here are some of our features: 
+
+- **AI assistance whenever you need it**: Get explanations, answers to questions, and much more with our powerful AI tutor. The AI tutor is built on GPT 4o, the latest in OpenAI's suite of large language models.
+- **Intelligent flashcards that get you**: Create flashcards at the click of a button. Flashcards can adjust to help you focus on your weaknesses.
+- **Detailed progress reports**: Get detailed feedback on your performance as well as suggested study areas.
+- *more coming soon...*
+
+## Where can I try it? 
+[Here!](https://opentutor.ifeanyiobinelo.com/)
+
+## Can I run Open Tutor on my machine?
+Absolutely! Follow these steps:
+
+1. Ensure you have the following installed:
+   - [Node.js](https://nodejs.org/en/download/package-manager)
+   - npm or yarn
+2. Install dependencies by running `npm install`.
+3. Set up a *.env.local* file in the root directory for this project. Refer to *.env.example* for more details.
+4. Run the development server.  
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. You probably want to run the backend application as well. Head over to the [backend repository](https://github.com/kz4killua/open-tutor-backend) and follow the steps there too. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Can I contribute? 
+Yes please! Open Tutor is currently open (pun intended), and we welcome everyone to contribute.
