@@ -4,7 +4,7 @@ import { useDocumentMessages } from "@/app/providers"
 import { type DocumentMessage } from "@/types"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import * as RadixScrollArea from "@radix-ui/react-scroll-area"
-import { FormattedMarkdown } from './formatted-markdown'
+import { Markdown } from './markdown'
 
 
 export function DocumentMessages({
@@ -77,9 +77,9 @@ function DocumentMessage({
           </div>
         }
         <div className='overflow-x-auto'>
-          <FormattedMarkdown>
+          <Markdown>
             { message.content }
-          </FormattedMarkdown>
+          </Markdown>
           
           {
             streaming && message.role === 'assistant' && 

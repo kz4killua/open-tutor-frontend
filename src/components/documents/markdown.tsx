@@ -1,5 +1,5 @@
 import React from 'react'
-import Markdown, { Components } from 'react-markdown'
+import ReactMarkdown, { Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
@@ -13,19 +13,19 @@ const components: Components = {
 }
 
 
-export function FormattedMarkdown({
+export function Markdown({
   children
 } : {
   children: string
 }) {
   return (
-    <Markdown 
+    <ReactMarkdown 
       className={"prose dark:prose-invert"} 
       remarkPlugins={[remarkGfm, remarkMath]} 
       rehypePlugins={[rehypeKatex]}
       components={components}
     >
       {children}
-    </Markdown>
+    </ReactMarkdown>
   )
 }
