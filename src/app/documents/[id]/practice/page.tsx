@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Link from "next/link";
 import Lottie from "lottie-react";
 import seeSawAnimation from "@/lotties/see-saw.json"
+import { Markdown } from "@/components/documents/markdown";
 
 
 interface UserAnswers
@@ -304,10 +305,14 @@ function Flashcard({
       <div className="group w-full max-w-2xl h-96 [perspective:1000px] text-center text-lg" onClick={handleClick}>
         <div className={`relative size-full border rounded-xl shadow-lg transition-all duration-300 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
           <div className="absolute inset-0 flex items-center justify-center p-10 [backface-visibility:hidden]">
-            {flashcard.front}
+            <Markdown>
+              {flashcard.front}
+            </Markdown>
           </div>
           <div className="absolute inset-0 flex items-center justify-center p-10 absolute inset-0 [transform:rotateY(180deg)] [backface-visibility:hidden]">
-            {flashcard.back}
+            <Markdown>
+              {flashcard.back}
+            </Markdown>
           </div>
         </div>
       </div>
