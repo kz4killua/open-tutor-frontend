@@ -97,10 +97,11 @@ function EvaluationReport({
 
   const [feedback, setFeedback] = useState<string[]>()
 
-  const percentage = userAnswers.current.correct.length / (
-    userAnswers.current.correct.length + 
-    userAnswers.current.wrong.length
-  ) * 100
+  const percentage = Math.round(
+    userAnswers.current.correct.length / (
+      userAnswers.current.correct.length + userAnswers.current.wrong.length
+    ) * 100
+  )
 
   useEffect(() => {
 
