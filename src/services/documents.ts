@@ -1,11 +1,12 @@
 import instance from "./base";
+import type { Document } from "@/types";
 
 
 export async function getDocumentsList() {
   return await instance.get('/documents/')
 }
 
-export async function createDocument(name: string, file: File) {
+export async function createDocument(name: Document['name'], file: File) {
   
   const formData = new FormData()
   formData.append('name', name)
@@ -18,10 +19,14 @@ export async function createDocument(name: string, file: File) {
   })
 }
 
-export async function getDocumentDetail(id: number) {
+export async function getDocumentDetail(id: Document['id']) {
   return await instance.get(`/documents/${id}`)
 }
 
-export async function deleteDocument(id: number) {
+export async function deleteDocument(id: Document['id']) {
   return await instance.delete(`/documents/${id}`)
+}
+
+export async function getDocumentOverview(id: Document['id']) {
+  return await instance.get(`/documents/${id}/overview`)
 }
