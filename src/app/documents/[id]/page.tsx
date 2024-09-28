@@ -100,6 +100,7 @@ function DocumentOverview({ document }: { document: Document }) {
     .then(response => {
       setOverview(response.data.overview)
     })
+    .catch(error => toast.error(error))
   }, [])
 
   return (
