@@ -56,6 +56,7 @@ export default function DocumentReadPage({
         <div className="bg-secondary">
           <main>
             <ActionsMenu 
+              document={document}
               selection={selection}  
               setUserInput={setUserInput} 
               setSidePanelOpen={setSidePanelOpen} 

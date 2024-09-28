@@ -2,15 +2,20 @@
 
 import { useEffect, useState } from "react"
 import { type Dispatch, type SetStateAction } from "react"
-import { type DocumentSelection, type UserInput } from "@/types"
+import type { Document, DocumentSelection, UserInput } from "@/types"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { BookOpenText, GraduationCap, MessageCircleQuestion } from "lucide-react"
+import { BookOpenText, GraduationCap, MessageCircleQuestion, Pen } from "lucide-react"
 import { toast } from "sonner"
+import { createFlashcardsFromText } from "@/services/flashcards"
 
 
 export function ActionsMenu({ 
-  selection, setUserInput, setSidePanelOpen
+  document,
+  selection, 
+  setUserInput, 
+  setSidePanelOpen
 } : {
+  document: Document,
   selection: DocumentSelection | null,
   setUserInput: Dispatch<SetStateAction<UserInput>>
   setSidePanelOpen: Dispatch<SetStateAction<boolean>>
@@ -43,6 +48,17 @@ export function ActionsMenu({
         quote: selection.text
       })
       setSidePanelOpen(true)
+    }
+  }
+
+  async function handleCreateFlashcard() {
+    if (selection?.text) {
+      const response = await createFlashcardsFromText(document.id, selection.text);
+      if (response.status >= 300) {
+        toast.error("Oops. Something went wrong.")
+      } else {
+        toast.success("Flashcard created. Easy peasy.")
+      }
     }
   }
 
@@ -89,6 +105,10 @@ export function ActionsMenu({
           <DropdownMenuItem onClick={handleQuestion} className="cursor-pointer">
             <MessageCircleQuestion className="mr-2 h-4 w-4" />
             <span>Ask a question</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleCreateFlashcard} className="cursor-pointer">
+            <Pen className="mr-2 h-4 w-4" />
+            <span>Create flashcard</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
