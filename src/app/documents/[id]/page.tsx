@@ -105,7 +105,7 @@ function DocumentOverview({ document }: { document: Document }) {
   return (
     <div className="border shadow rounded-lg p-4">
       <h1 className="font-medium mb-4">
-        Overview
+        📝 Overview
       </h1>
       {
         overview ? 
@@ -130,7 +130,7 @@ function DocumentDetails({ document }: { document: Document }) {
   return (
     <div className="grow border shadow rounded-lg p-4">
       <h1 className="font-medium mb-4">
-        Details
+        🛠️ Details
       </h1>
       <div className="flex flex-col gap-y-2 text-sm">
         <div>
