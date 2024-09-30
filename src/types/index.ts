@@ -30,3 +30,18 @@ export interface Flashcard {
   front: string;
   back: string;
 }
+
+export interface Highlight {
+  id: number;
+  page_number: number;
+  text: string;
+  client_rects: HighlightRect[]
+}
+
+
+export interface HighlightRect {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
