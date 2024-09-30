@@ -5,13 +5,16 @@ import 'core-js/proposals/promise-with-resolvers';
 
 import React, { useEffect, useRef, useState } from 'react';
 import type { Dispatch, SetStateAction } from "react"
-import { type DocumentSelection } from '@/types';
-import { type Document as DocumentType } from "@/types"
+import type { DocumentSelection, Highlight, Document as DocumentType } from '@/types';
 import { toast } from 'sonner';
+import { Popover } from '@/components/ui/popover';
+import { PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
+import StyledTooltip from '../shared/styled-tooltip';
+import { X } from 'lucide-react';
 import { SelectionListener } from '@/components/shared/selection-listener';
-import { useZoomLevel } from '@/app/providers';
-import './document-viewer.modules.css';
+import { useHighlights, useZoomLevel } from '@/app/providers';
 
+import './document-viewer.modules.css';
 
 // https://github.com/wojtekmaj/react-pdf/blob/main/README.md
 import { pdfjs, Document, Page } from 'react-pdf';
@@ -40,7 +43,8 @@ export function DocumentViewer({
   setSelection: Dispatch<SetStateAction<DocumentSelection | null>>
 }) {
 
-  const { zoomLevel, setZoomLevel } = useZoomLevel()
+  const { setZoomLevel } = useZoomLevel()
+  const { highlights } = useHighlights()
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pages, setPages] = useState<PDFPageProxy[]>([])
   const ref = useRef<HTMLDivElement>(null)
@@ -93,6 +97,7 @@ export function DocumentViewer({
                     setCurrentPage={setCurrentPage}
                     pageHeight={page.view[3]}
                     pageWidth={page.view[2]}
+                    highlights={highlights.filter(highlight => highlight.page_number === page.pageNumber)}
                   />
                 ))
               }
@@ -111,19 +116,21 @@ function DocumentPage({
   pageHeight,
   currentPage,
   setCurrentPage,
+  highlights,
 } : { 
   pageNumber: number, 
   pageWidth: number,
   pageHeight: number,
   currentPage: number,
   setCurrentPage: (pageNumber: number) => void,
+  highlights: Highlight[],
 }) {
 
   const ref = useRef<HTMLDivElement>(null)
-  const { zoomLevel, setZoomLevel } = useZoomLevel()
+  const { zoomLevel } = useZoomLevel()
   const [isLoaded, setIsLoaded] = useState(false)
 
-  // Only load pages that are within 2 pages of the current page.
+  // Only load pages that are within 2 pages of the user's current page.
   const isWithinRange = Math.abs(currentPage - pageNumber) <= 2
   
   // Use an intersection observer to load pages as they come into view.
@@ -178,7 +185,14 @@ function DocumentPage({
       scale={zoomLevel}
       onRenderSuccess={onRenderSuccess}
       onError={onPageLoadError}
-    />
+      className={"relative"}
+    >
+      {
+        highlights.map(highlight => (
+          <PageHighlight key={highlight.id} highlight={highlight} />
+        ))
+      }
+    </Page>
   )
 
   return (
@@ -198,6 +212,81 @@ function DocumentPage({
         fallback
       }
     </div>
+  )
+}
+
+
+function PageHighlight({
+  highlight
+} : {
+  highlight: Highlight
+}) {
+
+  const [open, setOpen] = useState(false)
+  const { highlightsDispatch } = useHighlights()
+
+  function handleClick() {
+    setOpen(true)
+  }
+
+  function handleRemoveHighlight() {
+    highlightsDispatch({ type: "REMOVE", id: highlight.id })
+    setOpen(false)
+  }
+
+  // Remove any rectangles with a width or height of 0.
+  const highlightRects = highlight.client_rects.filter(
+    rect => rect.width > 0 && rect.height > 0
+  )
+
+  if (highlightRects.length === 0) {
+    return null
+  }
+
+  const popoverTriggerRect = highlightRects[0]
+
+  return (
+    <>
+
+      {/* Highlight rectangles */}      
+      <div className='group'>
+        {
+          highlightRects.map((rect, index) => (
+            <div 
+              key={index}
+              className="absolute z-10 bg-primary rounded-sm opacity-20 group-hover:opacity-40 cursor-pointer"
+              style={{
+                left: `calc(${rect.left * 100}% - 2px)`,
+                top: `calc(${rect.top * 100}% - 2px)`,
+                width: `calc(${rect.width * 100}% + 4px)`,
+                height: `calc(${rect.height * 100}% + 4px)`,
+              }}
+              onClick={handleClick}
+            />
+          ))
+        }
+      </div>
+
+      {/* Popover for deleting highlights */}
+      <Popover open={open} onOpenChange={(open) => setOpen(open)} modal={false}>
+        <PopoverTrigger asChild>
+          <div className='absolute' style={{
+            position: 'absolute',
+            left: `calc(${popoverTriggerRect.left * 100}% - 2px)`,
+            top: `calc(${popoverTriggerRect.top * 100}% - 2px)`,
+            width: `calc(${popoverTriggerRect.width * 100}% + 4px)`,
+            height: `calc(${popoverTriggerRect.height * 100}% + 4px)`
+          }} />
+        </PopoverTrigger>
+        <PopoverContent className='z-40'>
+          <StyledTooltip text='Remove highlight'>
+            <button className="cursor-pointer p-2 border shadow-sm shadow-black focus:outline-0 rounded-full bg-background hover:bg-accent" onClick={handleRemoveHighlight}>
+              <X size={16} />
+            </button>
+          </StyledTooltip>
+        </PopoverContent>
+      </Popover>
+    </>
   )
 }
 

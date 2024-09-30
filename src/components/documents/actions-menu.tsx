@@ -1,12 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { type Dispatch, type SetStateAction } from "react"
+import type { Dispatch, SetStateAction } from "react"
 import type { Document, DocumentSelection, UserInput } from "@/types"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { BookOpenText, GraduationCap, MessageCircleQuestion, Pen } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { BookOpenText, GraduationCap, Highlighter, MessageCircleQuestion, Pen } from "lucide-react"
 import { toast } from "sonner"
 import { createFlashcardsFromText } from "@/services/flashcards"
+import { isContained } from "@/utilities/rects"
+import { useHighlights } from "@/app/providers"
 
 
 export function ActionsMenu({ 
@@ -20,6 +22,8 @@ export function ActionsMenu({
   setUserInput: Dispatch<SetStateAction<UserInput>>
   setSidePanelOpen: Dispatch<SetStateAction<boolean>>
 }) {
+
+  const { highlightsDispatch } = useHighlights()
 
   function handleExplain() {
     if (selection?.text) {
@@ -60,6 +64,58 @@ export function ActionsMenu({
         toast.success("Flashcard created. Easy peasy.")
       }
     }
+  }
+
+
+  async function handleHighlight() {
+
+    const selection = window.getSelection()
+    if (!selection) return
+
+    const range = selection.getRangeAt(0)
+
+    const pages = window.document.querySelectorAll(".react-pdf__Page")
+    if (!pages) return
+
+    // Find the page that contains the selection
+    const page = Array.from(pages).find((page, index) => {
+      if (isContained(range.getBoundingClientRect(), page.getBoundingClientRect())) {
+        return true
+      }
+    })
+    if (!page) {
+      toast.info("Highlighting is only available for single-page selections.")
+      return
+    }
+
+    const dataPageNumber = page.getAttribute("data-page-number")
+    if (!dataPageNumber) {
+      toast.error("Oops. Something went wrong. Try again.")
+      return
+    }
+    const pageNumber = parseInt(dataPageNumber)
+    
+    const { 
+      width: pageWidth, height: pageHeight, top: pageTop, left: pageLeft 
+    } = page.getBoundingClientRect();
+    
+    // Get the dimensions of each client rect relative to the page
+    const rects = Array.from(range.getClientRects()).map(rect => {
+      return {
+        left: (rect.left - pageLeft) / pageWidth,
+        top: (rect.top - pageTop) / pageHeight,
+        width: rect.width / pageWidth,
+        height: rect.height / pageHeight
+      }
+    })
+    
+    highlightsDispatch({ type: "ADD", highlight: {
+      id: Math.random(),
+      page_number: pageNumber,
+      client_rects: rects,
+      text: selection.toString()
+    }})
+
   }
 
   const [open, setOpen] = useState(false)
@@ -109,6 +165,10 @@ export function ActionsMenu({
           <DropdownMenuItem onClick={handleCreateFlashcard} className="cursor-pointer">
             <Pen className="mr-2 h-4 w-4" />
             <span>Create flashcard</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleHighlight} className="cursor-pointer">
+            <Highlighter className="mr-2 h-4 w-4" />
+            <span>Highlight</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
